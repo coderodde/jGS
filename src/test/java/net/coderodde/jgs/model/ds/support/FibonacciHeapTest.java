@@ -9,7 +9,7 @@ import org.junit.Test;
 
 /**
  * This class tests 
- * <code>net.coderodde.jgs.model.ds.support.BinomialHeap</code>.
+ * <code>net.coderodde.jgs.model.ds.support.FibonacciHeap</code>.
  * 
  * @author Rodion Efremov
  * @version 1.6

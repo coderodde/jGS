@@ -11,6 +11,26 @@ import net.coderodde.jgs.model.Node;
 public class Utilities {
 
     /**
+     * The length of the bar and titles.
+     */
+    private static final int BAR_LENGTH = 80;
+    
+    /**
+     * The separator bar.
+     */
+    private static final String bar;
+    
+    static {
+        final StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < BAR_LENGTH; ++i) {
+            sb.append('-');
+        }
+        
+        bar = sb.toString();
+    }
+    
+    /**
      * Hide the constructors.
      */
     private Utilities() {
@@ -53,5 +73,38 @@ public class Utilities {
             a.getOwnerGraph().toString() + ", b's graph: " +
             b.getOwnerGraph().toString());
         }
+    }
+        
+    public static void title1(final String title) {
+        barImpl(title, '*');
+    }
+    
+    public static void title2(final String title) {
+        barImpl(title, '-');
+    }
+        
+    public static void bar() {
+        System.out.println(bar);
+    }
+    
+    private static void barImpl(String title, final char ch) {
+        title = title.trim();
+        final StringBuilder sb = new StringBuilder(80);
+       
+        final int messageLength = title.length();
+        final int precedingChars = (80 - messageLength - 2) >>> 1;
+        final int followingChars = 80 - messageLength - 2 - precedingChars;
+        
+        for (int i = 0; i < precedingChars; ++i) {
+            sb.append(ch);
+        }
+        
+        sb.append(' ').append(title.trim()).append(' ');
+        
+        for (int i = 0; i < followingChars; ++i) {
+            sb.append(ch);
+        }
+        
+        System.out.println(sb.toString());
     }
 }
