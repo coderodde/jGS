@@ -9,6 +9,7 @@ import net.coderodde.jgs.model.ds.MinPriorityQueue;
  * This class implements binomial heap.
  * 
  * @author Rodion Efremov
+ * @version 1.6
  * @param <E> the element type.
  * @param <P> the type of priority keys.
  */
@@ -16,7 +17,7 @@ public class BinomialHeap<E, P extends Comparable<? super P>>
 extends MinPriorityQueue<E, P> {
 
     /**
-     * This class implements a node in a binomial heap.
+     * This class implements a binomial tree in a binomial heap.
      * 
      * @param <E> the element type.
      * @param <P> the type of priority keys.
@@ -54,7 +55,7 @@ extends MinPriorityQueue<E, P> {
         int degree;
         
         /**
-         * Construct a new node and initialize it with mandatory data.
+         * Constructs a new node and initialize it with mandatory data.
          * 
          * @param element the element to store in this node.
          * @param priority the priority of the element stored.
@@ -99,8 +100,7 @@ extends MinPriorityQueue<E, P> {
         BinomialTree<E, P> tree = new BinomialTree<>(element, priority);
         head = tree;
         size = 1;
-        map = new HashMap<>();
-        map.put(element, head);
+        map = null;
     }
     
     /**
@@ -109,6 +109,7 @@ extends MinPriorityQueue<E, P> {
     @Override
     public void add(E element, P priority) {
         if (map.containsKey(element)) {
+            // element already in this heap, use decreaseKey instead.
             return;
         }
         
@@ -118,24 +119,30 @@ extends MinPriorityQueue<E, P> {
             this.head = h.head;
             this.map.put(element, this.head);
             this.size = 1;
-            return;
+        } else {
+            heapUnion(h.head);
+            this.map.put(element, h.head);
+            this.size++;
         }
-        
-        // Once here, both this and h are not empty.
-        heapUnion(h.head);
-        this.size++;
-        this.map.put(element, h.head);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param element the element whose priority key to decrease.
+     * @param newPriority the new priority key.
+     */
     @Override
     public void decreasePriority(E element, P newPriority) {
         if (!map.containsKey(element)) {
+            // No element here.
             return;
         } 
         
         BinomialTree<E, P> target = map.get(element);
         
         if (target.priority.compareTo(newPriority) <= 0) {
+            // The priority key of element won't improve.
             return;
         }
         
@@ -161,6 +168,11 @@ extends MinPriorityQueue<E, P> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
+     */
     @Override
     public E extractMinimum() {
         if (size == 0) {
@@ -174,6 +186,8 @@ extends MinPriorityQueue<E, P> {
         BinomialTree<E, P> bestprev = null;
         P minPriorityKey = x.priority;
         
+        // Find the tree T with the least priority element and the tree 
+        // preceding T.
         while (x != null) {
             if (minPriorityKey.compareTo(x.priority) > 0) {
                 minPriorityKey = x.priority;
@@ -192,22 +206,37 @@ extends MinPriorityQueue<E, P> {
             bestprev.sibling = best.sibling;
         }
         
-        BinomialTree<E, P> reversedChildList = reverseRootList(best.child);
-        heapUnion(reversedChildList);
+        // Unite this heap with the reversed list of children of the tree whose
+        // root contained the extracted element.
+        heapUnion(reverseRootList(best.child));
         --size;
         return best.element;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the amount of elements in this heap. 
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return <code>true</code> if this heap is empty, <code>false</code>
+     * otherwise.
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         this.head = null;
@@ -215,6 +244,11 @@ extends MinPriorityQueue<E, P> {
         this.size = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return an empty binomial heap.
+     */
     @Override
     public MinPriorityQueue<E, P> spawn() {
        return new BinomialHeap<>();

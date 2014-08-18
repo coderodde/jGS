@@ -1,5 +1,6 @@
 package net.coderodde.jgs.model.ds.support;
 
+import java.util.NoSuchElementException;
 import java.util.Random;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -15,7 +16,7 @@ import org.junit.Test;
  */
 public class BinomialHeapTest {
     
-    private static final long seed = 1408192902229L;//System.currentTimeMillis();
+    private static final long seed = System.currentTimeMillis();
     
     private final BinomialHeap<Integer, Integer> heap;
     
@@ -37,15 +38,16 @@ public class BinomialHeapTest {
     }
     
     /**
-     * Test of add method, of class DaryHeap.
+     * Test of add and extractMinimum methods, of class DaryHeap.
      */
     @Test
-    public void testAdd() {
+    public void testAddAndExtractMinimum() {
         final int sz = 100000;
         final Random rnd = new Random(seed);
         
         for (int i = 0; i != sz; ++i) {
-            final Float f = rnd.nextFloat();
+            Integer ii = rnd.nextInt();
+            heap.add(ii, ii);
         }
         
         Integer prev = null;
@@ -79,33 +81,6 @@ public class BinomialHeapTest {
         while (!heap.isEmpty()) {
             assertEquals((Integer) i, heap.extractMinimum());
             i++;
-        }
-    }
-    
-    /**
-     * Test of extractMinimum method, of class DaryHeap.
-     */
-    @Test
-    public void testExtractMinimum() {
-        final int sz = 10000;
-        final Random rnd = new Random(seed);
-        
-        for (int i = 0; i < sz; ++i) {
-            Integer e = rnd.nextInt();
-            heap.add(e, e);
-        }
-        
-        Integer prev = null;
-        
-        while (!heap.isEmpty()) {
-            Integer current = heap.extractMinimum();
-            
-            if (prev != null && prev > current) {
-                fail("The sequence was not monotonically increasing. " +
-                     "Previous: " + prev + ", current: " + current + ".");
-            }
-            
-            prev = current;
         }
     }
     
@@ -177,6 +152,7 @@ public class BinomialHeapTest {
         heap.clear();
         
         assertTrue(heap.isEmpty());
+        assertEquals(0, heap.size());
     }
     
     /**
@@ -192,5 +168,44 @@ public class BinomialHeapTest {
         assertTrue(heap2 instanceof BinomialHeap);
         assertFalse(heap.isEmpty());
         assertTrue(heap2.isEmpty());
+    }
+    
+    /**
+     * Additional test.
+     */
+    @Test
+    public void additionalTest() {
+        heap.add(2, 2);
+        heap.add(1, 1);
+        heap.add(3, 7);
+        heap.add(4, 6);
+        heap.decreasePriority(3, -1);
+        heap.decreasePriority(4, 10);
+        heap.add(4, -4);
+        
+        assertEquals(4, heap.size());
+        assertFalse(heap.isEmpty());
+        
+        assertEquals((Integer) 3, heap.extractMinimum());
+        assertEquals((Integer) 1, heap.extractMinimum());
+        assertEquals((Integer) 2, heap.extractMinimum());
+        assertEquals((Integer) 4, heap.extractMinimum());
+        
+        assertTrue(heap.isEmpty());
+        assertEquals(0, heap.size());
+    }
+    
+    /**
+     * Checks that the heap throws NoSuchElementException once being read while
+     * containing no elements.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testReadingEmptyThrows() {
+        heap.add(10, 10);
+        heap.add(1, 29);
+        
+        heap.extractMinimum();
+        heap.extractMinimum();
+        heap.extractMinimum();
     }
 }
