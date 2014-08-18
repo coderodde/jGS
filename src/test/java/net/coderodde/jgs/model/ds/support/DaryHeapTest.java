@@ -104,7 +104,7 @@ public class DaryHeapTest {
         
         for (int i = 0; i != sz; ++i) {
             final Float f = rnd.nextFloat();
-            heap.add(Float.NaN, Float.NaN);
+            heap.add(f, f);
         }
         
         Float prev = null;
@@ -220,10 +220,11 @@ public class DaryHeapTest {
     
     private void testSpawnOn(final DaryHeap<Integer, Integer> heap) {
         heap.add(1, 2);
-        
+       
         DaryHeap<Integer, Integer> heap2 = 
                 (DaryHeap<Integer, Integer>) heap.spawn();
-        
+       
+        assertTrue(heap2 instanceof DaryHeap);
         assertEquals(heap.getDegree(), heap2.getDegree());
         assertFalse(heap.isEmpty());
         assertTrue(heap2.isEmpty());
