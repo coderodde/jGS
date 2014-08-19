@@ -7,23 +7,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * This class tests <code>net.coderodde.jgs.model.UndirectedGraphNode</code>.
+ * This class tests <code>net.coderodde.jgs.model.DirectedGraphNode</code>.
  * 
  * @author Rodion Efremov
  * @version 1.6
  */
-public class UndirectedGraphNodeTest {
+public class DirectedGraphNodeTest {
     
-    private final UndirectedGraphNode a;
-    private final UndirectedGraphNode b;
-    private final UndirectedGraphNode c;
-    private final Graph<UndirectedGraphNode> G1;
-    private final Graph<UndirectedGraphNode> G2;
+    private final DirectedGraphNode a;
+    private final DirectedGraphNode b;
+    private final DirectedGraphNode c;
+    private final Graph<DirectedGraphNode> G1;
+    private final Graph<DirectedGraphNode> G2;
     
-    public UndirectedGraphNodeTest() {
-        a = new UndirectedGraphNode("A");
-        b = new UndirectedGraphNode("B");
-        c = new UndirectedGraphNode("C");
+    public DirectedGraphNodeTest() {
+        a = new DirectedGraphNode("A");
+        b = new DirectedGraphNode("B");
+        c = new DirectedGraphNode("C");
         
         G1 = new Graph<>("G1");
         G2 = new Graph<>("G2");
@@ -40,7 +40,7 @@ public class UndirectedGraphNodeTest {
     }
     
     /**
-     * Test of clear method, of class UndirectedGraphNode.
+     * Test of clear method, of class DirectedGraphNode.
      */
     @Test
     public void testClear() {
@@ -60,23 +60,23 @@ public class UndirectedGraphNodeTest {
         a.connectTo(c);
         
         assertEquals(1, a.childrenListSize());
-        assertEquals(1, a.parentsListSize());
+        assertEquals(0, a.parentsListSize());
         
         assertEquals(0, b.childrenListSize());
         assertEquals(0, b.parentsListSize());
         
-        assertEquals(1, c.childrenListSize());
+        assertEquals(0, c.childrenListSize());
         assertEquals(1, c.parentsListSize());
         
         a.connectTo(b);
         
         assertEquals(2, a.childrenListSize());
-        assertEquals(2, a.parentsListSize());
+        assertEquals(0, a.parentsListSize());
         
-        assertEquals(1, b.childrenListSize());
+        assertEquals(0, b.childrenListSize());
         assertEquals(1, b.parentsListSize());
         
-        assertEquals(1, c.childrenListSize());
+        assertEquals(0, c.childrenListSize());
         assertEquals(1, c.parentsListSize());
         
         a.clear();
@@ -86,7 +86,7 @@ public class UndirectedGraphNodeTest {
     }
 
     /**
-     * Test of connectTo method, of class UndirectedGraphNode.
+     * Test of connectTo method, of class DirectedGraphNode.
      */
     @Test
     public void testConnectTo() {
@@ -100,10 +100,10 @@ public class UndirectedGraphNodeTest {
         a.connectTo(b);
         
         assertEquals(1, a.childrenListSize());
-        assertEquals(1, a.parentsListSize());
+        assertEquals(0, a.parentsListSize());
         
         assertTrue(a.isConnectedTo(b));
-        assertTrue(b.isConnectedTo(a));
+        assertFalse(b.isConnectedTo(a));
         
         assertFalse(a.isConnectedTo(c));
         assertFalse(c.isConnectedTo(a));
@@ -113,7 +113,7 @@ public class UndirectedGraphNodeTest {
     }
 
     /**
-     * Test of isConnectedTo method, of class UndirectedGraphNode.
+     * Test of isConnectedTo method, of class DirectedGraphNode.
      */
     @Test
     public void testIsConnectedTo() {
@@ -127,16 +127,16 @@ public class UndirectedGraphNodeTest {
         a.connectTo(b);
         
         assertTrue(a.isConnectedTo(b));
-        assertTrue(b.isConnectedTo(a));
+        assertFalse(b.isConnectedTo(a));
         
         b.disconnectFrom(a);
         
-        assertFalse(a.isConnectedTo(b));
+        assertTrue(a.isConnectedTo(b));
         assertFalse(b.isConnectedTo(a));
     }
 
     /**
-     * Test of disconnectFrom method, of class UndirectedGraphNode.
+     * Test of disconnectFrom method, of class DirectedGraphNode.
      */
     @Test
     public void testDisconnectFrom() {
@@ -149,7 +149,7 @@ public class UndirectedGraphNodeTest {
         
         c.connectTo(a);
         
-        assertTrue(a.isConnectedTo(c));
+        assertFalse(a.isConnectedTo(c));
         assertTrue(c.isConnectedTo(a));
         
         assertFalse(a.isConnectedTo(b));
@@ -161,11 +161,16 @@ public class UndirectedGraphNodeTest {
         assertFalse(b.isConnectedTo(a));
         
         assertFalse(a.isConnectedTo(a));
+        assertTrue(c.isConnectedTo(a));
+        
+        c.disconnectFrom(a);
+        
+        assertFalse(a.isConnectedTo(c));
         assertFalse(c.isConnectedTo(a));
     }
 
     /**
-     * Test of parents method, of class UndirectedGraphNode.
+     * Test of parents method, of class DirectedGraphNode.
      */
     @Test
     public void testParents() {
@@ -173,7 +178,7 @@ public class UndirectedGraphNodeTest {
         G1.addNode(b);
         G1.addNode(c);
         
-        Iterator<UndirectedGraphNode> iterator = a.parents().iterator();
+        Iterator<DirectedGraphNode> iterator = a.parents().iterator();
         
         assertFalse(iterator.hasNext());
         
@@ -181,23 +186,21 @@ public class UndirectedGraphNodeTest {
         
         iterator = a.parents().iterator();
         
-        assertTrue(iterator.hasNext());
-        assertEquals(iterator.next(), b);
         assertFalse(iterator.hasNext());
         
-        a.connectTo(c);
+        c.connectTo(b);
         
-        iterator = a.parents().iterator();
+        iterator = b.parents().iterator();
         
         assertTrue(iterator.hasNext());
-        assertEquals(iterator.next(), b);
+        assertEquals(iterator.next(), a);
         assertTrue(iterator.hasNext());
         assertEquals(iterator.next(), c);
         assertFalse(iterator.hasNext());
     }
 
     /**
-     * Test of iterator method, of class UndirectedGraphNode.
+     * Test of iterator method, of class DirectedGraphNode.
      */
     @Test
     public void testIterator() {
@@ -205,7 +208,7 @@ public class UndirectedGraphNodeTest {
         G1.addNode(b);
         G1.addNode(c);
         
-        Iterator<UndirectedGraphNode> iterator = a.iterator();
+        Iterator<DirectedGraphNode> iterator = a.iterator();
         
         assertFalse(iterator.hasNext());
         
@@ -229,7 +232,7 @@ public class UndirectedGraphNodeTest {
     }
 
     /**
-     * Test of childrenListSize method, of class UndirectedGraphNode.
+     * Test of childrenListSize method, of class DirectedGraphNode.
      */
     @Test
     public void testChildrenListSize() {
@@ -239,27 +242,41 @@ public class UndirectedGraphNodeTest {
         G1.addNode(b);
         G1.addNode(c);
         
-        assertEquals(a.childrenListSize(), 0);
+        assertEquals(0, a.childrenListSize());
+        assertEquals(0, b.childrenListSize());
+        assertEquals(0, c.childrenListSize());
         
-        b.connectTo(a);
+        a.connectTo(b);
         
-        assertEquals(a.childrenListSize(), 1);
+        assertEquals(1, a.childrenListSize());
         
         a.connectTo(c);
         
-        assertEquals(a.childrenListSize(), 2);
+        assertEquals(2, a.childrenListSize());
+        
+        a.connectTo(a);
+        
+        assertEquals(3, a.childrenListSize());
         
         a.disconnectFrom(b);
         
-        assertEquals(a.childrenListSize(), 1);
+        assertEquals(2, a.childrenListSize());
         
-        c.disconnectFrom(a);
+        a.disconnectFrom(b);
         
-        assertEquals(a.childrenListSize(), 0);
+        assertEquals(2, a.childrenListSize());
+        
+        a.disconnectFrom(c);
+        
+        assertEquals(1, a.childrenListSize());
+        
+        a.disconnectFrom(a);
+        
+        assertEquals(0, a.childrenListSize());
     }
 
     /**
-     * Test of parentsListSize method, of class UndirectedGraphNode.
+     * Test of parentsListSize method, of class DirectedGraphNode.
      */
     @Test
     public void testParentsListSize() {
@@ -269,45 +286,53 @@ public class UndirectedGraphNodeTest {
         G1.addNode(b);
         G1.addNode(c);
         
-        assertEquals(a.parentsListSize(), 0);
+        assertEquals(0, a.parentsListSize());
+        
+        a.connectTo(b);
+        
+        assertEquals(0, a.parentsListSize());
         
         b.connectTo(a);
         
-        assertEquals(a.parentsListSize(), 1);
+        assertEquals(1, a.parentsListSize());
         
-        a.connectTo(c);
+        c.connectTo(a);
         
-        assertEquals(a.parentsListSize(), 2);
+        assertEquals(2, a.parentsListSize());
         
         a.disconnectFrom(b);
         
-        assertEquals(a.parentsListSize(), 1);
+        assertEquals(2, a.parentsListSize());
+        
+        b.disconnectFrom(a);
+        
+        assertEquals(1, a.parentsListSize());
         
         c.disconnectFrom(a);
         
-        assertEquals(a.parentsListSize(), 0);
+        assertEquals(0, a.parentsListSize());
     }
 
     /**
-     * Test of toString method, of class UndirectedGraphNode.
+     * Test of toString method, of class DirectedGraphNode.
      */
     @Test
     public void testToString() {
-        assertEquals(a.toString(), "[UndirectedGraphNode A]");
-        assertEquals(b.toString(), "[UndirectedGraphNode B]");
-        assertEquals(c.toString(), "[UndirectedGraphNode C]");
+        assertEquals(a.toString(), "[DirectedGraphNode A]");
+        assertEquals(b.toString(), "[DirectedGraphNode B]");
+        assertEquals(c.toString(), "[DirectedGraphNode C]");
         
-        assertEquals(new UndirectedGraphNode("Funkeeh!").toString(),
-                     "[UndirectedGraphNode Funkeeh!]");
+        assertEquals(new DirectedGraphNode("Funkeeh!").toString(),
+                     "[DirectedGraphNode Funkeeh!]");
     }
     
     /**
-     * Tests that constructing an UndirectedGraphNode with null name throws
+     * Tests that constructing an DirectedGraphNode with null name throws
      * NullPointerException.
      */
     @Test(expected = NullPointerException.class)
     public void nullNameThrows() {
-        new UndirectedGraphNode(null);
+        new DirectedGraphNode(null);
     }
     
     /**
@@ -335,7 +360,7 @@ public class UndirectedGraphNodeTest {
     @Test(expected = NullPointerException.class) 
     public void connectingToNonNullNodeHavingNoOwnerGraphThrows() {
         G1.addNode(a);
-        a.connectTo(new UndirectedGraphNode("tmp"));
+        a.connectTo(new DirectedGraphNode("tmp"));
     }
     
     /**
