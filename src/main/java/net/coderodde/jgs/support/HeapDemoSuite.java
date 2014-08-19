@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import net.coderodde.jgs.DemoSuite;
 import static net.coderodde.jgs.Utilities.bar;
+import static net.coderodde.jgs.Utilities.eq;
 import static net.coderodde.jgs.Utilities.title1;
 import static net.coderodde.jgs.Utilities.title2;
 import net.coderodde.jgs.model.ds.MinPriorityQueue;
@@ -26,7 +27,6 @@ import net.coderodde.jgs.model.ds.support.FibonacciHeap;
  * The profiled operations are
  * <ul>
  *   <li><code>add</code></li>,
- *   <li><code>decreaseKey</code></li>,
  *   <li><code>extractMinimum</code></li>.
  * </ul>
  * 
@@ -64,13 +64,19 @@ public class HeapDemoSuite implements DemoSuite {
         profileDaryHeaps(seed);
         profileBinomialHeap(seed);
         profileFibonacciHeap(seed);
-        title2("Equal sequences: " + eq(dary2Result,
-                                        dary3Result,
-                                        dary4Result,
-                                        dary5Result,
-                                        binomialResult,
-                                        fibonacciResult));
+        
         bar();
+        System.out.println(
+                "Output sequences are identical: " + eq(dary2Result,
+                                                        dary3Result,
+                                                        dary4Result,
+                                                        dary5Result,
+                                                        binomialResult,
+                                                        fibonacciResult));
+        
+        title1("END OF PROFILING HEAPS");
+        System.out.println();
+        System.out.println();
     }
     
     private void profileDaryHeaps(final long seed) {
@@ -87,6 +93,8 @@ public class HeapDemoSuite implements DemoSuite {
         
         final Random rnd = new Random(seed);
         
+        long total = 0L;
+        
         long ta = System.currentTimeMillis();
         
         for (int i = 0; i != N; ++i) {
@@ -98,18 +106,7 @@ public class HeapDemoSuite implements DemoSuite {
         
         System.out.println("add() in " + (tb - ta) + " ms.");
         
-        ta = System.currentTimeMillis();
-        
-        for (int i = 0; i != N / 2; ++i) {
-            final Integer t = rnd.nextInt(N);
-            final Integer p = t / 2;
-            
-            heap.decreasePriority(t, p);
-        }
-        
-        tb = System.currentTimeMillis();
-        
-        System.out.println("decreasePriority() in " + (tb - ta) + " ms.");
+        total += tb - ta;
         
         binomialResult.clear();
         
@@ -122,6 +119,10 @@ public class HeapDemoSuite implements DemoSuite {
         tb = System.currentTimeMillis();
         
         System.out.println("extractMinimum() in " + (tb - ta) + " ms.");
+        
+        total += tb - ta;
+        
+        System.out.println("Total: " + total + " ms.");
     }
     
     private void profileFibonacciHeap(final long seed) {
@@ -130,6 +131,8 @@ public class HeapDemoSuite implements DemoSuite {
         title2(heap.getClass().getSimpleName());
         
         final Random rnd = new Random(seed);
+        
+        long total = 0L;
         
         long ta = System.currentTimeMillis();
         
@@ -142,18 +145,7 @@ public class HeapDemoSuite implements DemoSuite {
         
         System.out.println("add() in " + (tb - ta) + " ms.");
         
-        ta = System.currentTimeMillis();
-        
-        for (int i = 0; i != N / 2; ++i) {
-            final Integer t = rnd.nextInt(N);
-            final Integer p = t / 2;
-            
-            heap.decreasePriority(t, p);
-        }
-        
-        tb = System.currentTimeMillis();
-        
-        System.out.println("decreasePriority() in " + (tb - ta) + " ms.");
+        total += tb - ta;
         
         fibonacciResult.clear();
         
@@ -166,6 +158,10 @@ public class HeapDemoSuite implements DemoSuite {
         tb = System.currentTimeMillis();
         
         System.out.println("extractMinimum() in " + (tb - ta) + " ms.");
+        
+        total += tb - ta;
+        
+        System.out.println("Total: " + total + " ms.");
     }
     
     private void profile(final DaryHeap<Integer, Integer> heap,
@@ -175,6 +171,8 @@ public class HeapDemoSuite implements DemoSuite {
                ", degree " + heap.getDegree());
         
         final Random rnd = new Random(seed);
+        
+        long total = 0L;
         
         long ta = System.currentTimeMillis();
         
@@ -187,18 +185,7 @@ public class HeapDemoSuite implements DemoSuite {
         
         System.out.println("add() in " + (tb - ta) + " ms.");
         
-        ta = System.currentTimeMillis();
-        
-        for (int i = 0; i != N / 2; ++i) {
-            final Integer t = rnd.nextInt(N);
-            final Integer p = t / 2;
-            
-            heap.decreasePriority(t, p);
-        }
-        
-        tb = System.currentTimeMillis();
-        
-        System.out.println("decreasePriority() in " + (tb - ta) + " ms.");
+        total += tb - ta;
         
         result.clear();
         
@@ -211,27 +198,9 @@ public class HeapDemoSuite implements DemoSuite {
         tb = System.currentTimeMillis();
         
         System.out.println("extractMinimum() in " + (tb - ta) + " ms.");
-    }
-    
-    private static final boolean eq(final List<Integer>... lists) {
-        if (lists.length < 2) {
-            throw new IllegalArgumentException("Two few integer lists.");
-        }
         
-        for (int i = 0; i < lists.length - 1; ++i) {
-            if (lists[i].size() != lists[i + 1].size()) {
-                return false;
-            }
-        }
+        total += tb - ta;
         
-        for (int i = 0; i < lists[0].size(); ++i) {
-            for (int j = 0; j < lists.length - 1; ++j) {
-                if (lists[j].get(i) != lists[j + 1].get(i)) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
+        System.out.println("Total: " + total + " ms.");
     }
 }

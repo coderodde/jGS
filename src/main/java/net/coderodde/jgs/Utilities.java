@@ -1,5 +1,6 @@
 package net.coderodde.jgs;
 
+import java.util.List;
 import net.coderodde.jgs.model.Node;
 
 /**
@@ -75,6 +76,27 @@ public class Utilities {
         }
     }
         
+    public static final <T> boolean eq(final List<T>... lists) {
+        if (lists.length < 2) {
+            throw new IllegalArgumentException("Too few integer lists.");
+        }
+        
+        for (int i = 0; i < lists.length - 1; ++i) {
+            if (lists[i].size() != lists[i + 1].size()) {
+                return false;
+            }
+        }
+        
+        for (int i = 0; i < lists[0].size(); ++i) {
+            for (int j = 0; j < lists.length - 1; ++j) {
+                if (!lists[j].get(i).equals(lists[j + 1].get(i))) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
     public static void title1(final String title) {
         barImpl(title, '*');
     }
