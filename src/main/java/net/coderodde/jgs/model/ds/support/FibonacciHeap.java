@@ -97,14 +97,17 @@ extends MinPriorityQueue<E, P> {
      */
     private int size;
 
+    private Node<E, P>[] array;
+    
     /**
      * Constructs a new {@code FibonacciHeap} with the given capacity for the 
      * node map.
      * 
-     * @param mapCapacity 
+     * @param mapCapacity the initial capacity of the underlying map.
      */
     public FibonacciHeap(final int mapCapacity) {
         map = new HashMap<>(mapCapacity);
+        array = new Node[10];
     }
 
     /**
@@ -260,11 +263,11 @@ extends MinPriorityQueue<E, P> {
     }
     
     private void consolidate() {
-        int arraySize = ((int) Math.floor(Math.log(size) / LOG_PHI)) + 1;
-        List<Node<E, P>> array = new ArrayList<>(arraySize);
-
+        final int arraySize = ((int) Math.floor(Math.log(size) / LOG_PHI)) + 1;
+        checkArray(arraySize);
+        
         for (int i = 0; i < arraySize; ++i) {
-            array.add(null);
+            array[i] = null;
         }
 
         int numberOfRoots = 0;
@@ -285,7 +288,7 @@ extends MinPriorityQueue<E, P> {
             Node<E, P> next = x.right;
 
             for (;;) {
-                Node<E, P> y = array.get(degree);
+                Node<E, P> y = array[degree];
 
                 if (y == null) {
                     break;
@@ -298,11 +301,11 @@ extends MinPriorityQueue<E, P> {
                 }
 
                 link(y, x);
-                array.set(degree, null);
+                array[degree] = null;
                 degree++;
             }
 
-            array.set(degree, x);
+            array[degree] = x;
             x = next;
             numberOfRoots--;
         }
@@ -386,6 +389,13 @@ extends MinPriorityQueue<E, P> {
                 cut(y, z);
                 cascadingCut(z);
             }
+        }
+    }
+    
+    private void checkArray(final int size) {
+        if (array.length < size) {
+            final Node[] newArray = new Node[size];
+            array = newArray;
         }
     }
 }

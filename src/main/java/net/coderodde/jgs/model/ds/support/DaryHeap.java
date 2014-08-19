@@ -128,8 +128,8 @@ extends MinPriorityQueue<E, P> {
     /**
      * {@inheritDoc}
      * 
-     * @param element
-     * @param priority 
+     * @param element the element to add. Must not be already in the heap.
+     * @param priority the priority of <code>element</code>.
      */
     @Override
     public void add(final E element, final P priority) {

@@ -10,7 +10,7 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
 
 /**
  * This class models nodes of undirected graphs where all neighbor nodes of this
- * node are considered both children and parents. The <tt>edge invariant</tt> is 
+ * node are considered both children and parents. The <b>edge invariant</b> is 
  * that if there is an (undirected) edge between two nodes <code>a</code> and 
  * <code>b</code>, both <code>a.neighbors.contains(b)</code> and
  * <code>b.neighbors.contains(a)</code> are <code>true</code>.
@@ -91,6 +91,9 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return returns <code>true</code> if this node is connected to 
+     * <code>childCandidate</code>; <code>false</code> otherwise.
      */
     @Override
     public boolean isConnectedTo(final UndirectedGraphNode childCandidate) {
@@ -118,6 +121,8 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return an {@link Iterable} over this node's parents.
      */
     @Override
     public Iterable<UndirectedGraphNode> parents() {
@@ -131,6 +136,8 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return an {@link Iterator} over this node's children.
      */
     @Override
     public Iterator<UndirectedGraphNode> iterator() {
@@ -139,6 +146,8 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc} 
+     * 
+     * @return the amount of children of this node.
      */
     @Override
     public int childrenListSize() {
@@ -147,6 +156,8 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc} 
+     * 
+     * @return the amount of parents of this node.
      */
     @Override
     public int parentsListSize() {
@@ -155,6 +166,8 @@ public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return a string representation of this node.
      */
     @Override
     public final String toString() {

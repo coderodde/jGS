@@ -12,7 +12,7 @@ package net.coderodde.jgs.model.ds;
 public abstract class MinPriorityQueue<E, P extends Comparable<? super P>> {
 
     /**
-     * Adds <code>element</code> and assigns to the priority 
+     * Adds <code>element</code> and assigns to it the priority 
      * <code>priority</code>.
      * 
      * @param element the element to store.
@@ -60,7 +60,7 @@ public abstract class MinPriorityQueue<E, P extends Comparable<? super P>> {
     public abstract void clear();
     
     /**
-     * Spawns another empty heap with the same implementing type.
+     * Spawns another empty heap with the same implementation.
      * 
      * @return another empty heap.
      */

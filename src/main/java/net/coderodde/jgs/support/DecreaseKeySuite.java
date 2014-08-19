@@ -12,10 +12,30 @@ import net.coderodde.jgs.model.ds.support.BinomialHeap;
 import net.coderodde.jgs.model.ds.support.DaryHeap;
 import net.coderodde.jgs.model.ds.support.FibonacciHeap;
 
+/**
+ * This class implements a demo suite for profiling 
+ * <code>decreasePriority</code> of each heap of the project.
+ * 
+ * The following heaps are demonstrated:
+ * <ul>
+ *   <li><tt>d</tt>-ary heap ({@code net.coderodde.jgs.model.ds.support.DaryHeap}) for <tt>d = 2, 3, 4, 5</tt>,</li>
+ *   <li>Binomial heap ({@code net.coderodde.jgs.model.ds.support.BinomialHeap}),</li>
+ *   <li>Fibonacci heap ({@code net.coderodde.jgs.model.ds.support.FibonacciHeap}).</li>
+ * </ul>
+ * 
+ * @author Rodion Efremov
+ * @version 1.6
+ */
 public class DecreaseKeySuite implements DemoSuite {
 
+    /**
+     * The amount of elements to load into each heap.
+     */
     private static final int N = 500000;
     
+    /**
+     * The seed for random number generators.
+     */
     private final long seed;
     
     private final List<Integer> dary2Result;
@@ -25,6 +45,9 @@ public class DecreaseKeySuite implements DemoSuite {
     private final List<Integer> binomialResult;
     private final List<Integer> fibonacciResult;
     
+    /**
+     * Constructs this demo suite.
+     */
     public DecreaseKeySuite() {
         this.seed            = System.currentTimeMillis();
         this.dary2Result     = new ArrayList<>(N);
@@ -37,6 +60,9 @@ public class DecreaseKeySuite implements DemoSuite {
         title1("DecreaseKeySuite.java, seed: " + seed);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         title1("PROFILING HEAP DECREASE KEY");
@@ -63,6 +89,12 @@ public class DecreaseKeySuite implements DemoSuite {
         System.out.println();
     }
 
+    /**
+     * Profiles a particular <tt>d</tt>-ary heap.
+     * 
+     * @param heap the <tt>d</tt>-ary heap to profile.
+     * @param resultList the list for storing the output sequence.
+     */
     private void profileDaryHeap(final DaryHeap<Integer, Integer> heap,
                                  final List<Integer> resultList) {
         title2(heap.getClass().getSimpleName() + 
@@ -89,6 +121,9 @@ public class DecreaseKeySuite implements DemoSuite {
         }
     }
 
+    /**
+     * Profiles a {@link net.coderodde.jgs.model.ds.support.BinomialHeap}.
+     */
     private void profileBinomialHeap() {
         final MinPriorityQueue<Integer, Integer> heap = new BinomialHeap<>();
         
@@ -115,6 +150,9 @@ public class DecreaseKeySuite implements DemoSuite {
         }
     }
 
+    /**
+     * Profiles a {@link net.coderodde.jgs.model.ds.support.FibonacciHeap}.
+     */
     private void profileFibonacciHeap() {
         final MinPriorityQueue<Integer, Integer> heap = new FibonacciHeap<>();
         

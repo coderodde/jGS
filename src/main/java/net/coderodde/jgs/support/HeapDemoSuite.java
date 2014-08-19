@@ -19,15 +19,15 @@ import net.coderodde.jgs.model.ds.support.FibonacciHeap;
  * 
  * The following heaps are demonstrated:
  * <ul>
- *   <li><tt>d</tt>-ary heap ({@code net.coderodde.jgs.model.ds.support.DaryHeap}) for <tt>d = 2, 3, 4, 5</tt>,</li>
- *   <li>Binomial heap</li> ({@code net.coderodde.jgs.model.ds.support.BinomialHeap}),
- *   <li>Fibonacci heap ({@code net.coderodde.jgs.model.ds.support.FibonacciHeap}).</li>
+ *   <li><tt>d</tt>-ary heap ({@link net.coderodde.jgs.model.ds.support.DaryHeap}) for <tt>d = 2, 3, 4, 5</tt>,
+ *   <li>Binomial heap ({@link net.coderodde.jgs.model.ds.support.BinomialHeap}),
+ *   <li>Fibonacci heap ({@link net.coderodde.jgs.model.ds.support.FibonacciHeap}).
  * </ul>
  * 
  * The profiled operations are
  * <ul>
- *   <li><code>add</code></li>,
- *   <li><code>extractMinimum</code></li>.
+ *   <li><code>add</code>,
+ *   <li><code>extractMinimum</code>.
  * </ul>
  * 
  * @author Rodion Efremov
@@ -35,8 +35,14 @@ import net.coderodde.jgs.model.ds.support.FibonacciHeap;
  */
 public class HeapDemoSuite implements DemoSuite {
 
+    /**
+     * The number of elements to load into each heap.
+     */
     private static final int N = 500000;
     
+    /**
+     * The seed for all the random number generators.
+     */
     private final long seed;
     
     private final List<Integer> dary2Result;
@@ -46,6 +52,9 @@ public class HeapDemoSuite implements DemoSuite {
     private final List<Integer> binomialResult;
     private final List<Integer> fibonacciResult;
     
+    /**
+     * Constructs this demo suite.
+     */
     public HeapDemoSuite() {
         seed = System.currentTimeMillis();
         title1("HeapDemoSuite.java, seed: " + seed);
@@ -58,6 +67,9 @@ public class HeapDemoSuite implements DemoSuite {
         fibonacciResult = new ArrayList<>(N);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         title1("PROFILING HEAPS");
@@ -79,13 +91,24 @@ public class HeapDemoSuite implements DemoSuite {
         System.out.println();
     }
     
+    /**
+     * Profile all the {@link net.coderodde.jgs.model.ds.support.DaryHeap}s, 
+     * each with its own degree.
+     * 
+     * @param seed the seed for random number generators.
+     */
     private void profileDaryHeaps(final long seed) {
-        profile(new DaryHeap<Integer, Integer>(2), seed, dary2Result);
-        profile(new DaryHeap<Integer, Integer>(3), seed, dary3Result);
-        profile(new DaryHeap<Integer, Integer>(4), seed, dary4Result);
-        profile(new DaryHeap<Integer, Integer>(5), seed, dary5Result);
+        profileDaryHeap(new DaryHeap<Integer, Integer>(2), seed, dary2Result);
+        profileDaryHeap(new DaryHeap<Integer, Integer>(3), seed, dary3Result);
+        profileDaryHeap(new DaryHeap<Integer, Integer>(4), seed, dary4Result);
+        profileDaryHeap(new DaryHeap<Integer, Integer>(5), seed, dary5Result);
     }
     
+    /**
+     * Profile the {@link net.coderodde.jgs.model.ds.support.BinomialHeap}.
+     * 
+     * @param seed the seed for random number generator.
+     */
     private void profileBinomialHeap(final long seed) {
         final MinPriorityQueue<Integer, Integer> heap = new BinomialHeap<>();
         
@@ -125,6 +148,11 @@ public class HeapDemoSuite implements DemoSuite {
         System.out.println("Total: " + total + " ms.");
     }
     
+    /**
+     * Profile the {@link net.coderodde.jgs.model.ds.support.FibonacciHeap}.
+     * 
+     * @param seed the seed for random number generator.
+     */
     private void profileFibonacciHeap(final long seed) {
         final MinPriorityQueue<Integer, Integer> heap = new FibonacciHeap<>();
         
@@ -164,7 +192,14 @@ public class HeapDemoSuite implements DemoSuite {
         System.out.println("Total: " + total + " ms.");
     }
     
-    private void profile(final DaryHeap<Integer, Integer> heap,
+    /**
+     * Implements an actual profiling routine for a given <tt>d</tt>-ary heap.
+     * 
+     * @param heap the heap to profile.
+     * @param seed the seed for the random number generator.
+     * @param result the list for storing output sequence.
+     */
+    private void profileDaryHeap(final DaryHeap<Integer, Integer> heap,
                          final long seed,
                          final List<Integer> result) {
         title2(heap.getClass().getSimpleName() + 
