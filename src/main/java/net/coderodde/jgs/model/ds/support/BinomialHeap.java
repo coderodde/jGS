@@ -17,6 +17,11 @@ public class BinomialHeap<E, P extends Comparable<? super P>>
 extends MinPriorityQueue<E, P> {
 
     /**
+     * The default map capacity.
+     */
+    private static final int DEFAULT_MAP_CAPACITY = 1 << 10;
+    
+    /**
      * This class implements a binomial tree in a binomial heap.
      * 
      * @param <E> the element type.
@@ -82,10 +87,20 @@ extends MinPriorityQueue<E, P> {
     private final Map<E, BinomialTree<E, P>> map;
     
     /**
-     * Constructs a new binomial heap.
+     * Constructs a new {@code BinomialHeap} with default settings.
      */
     public BinomialHeap() {
-        this.map = new HashMap<>();
+        this(DEFAULT_MAP_CAPACITY);
+    }
+    
+    /**
+     * Constructs a new {@code BinomialHeap} using <code>mapCapacity</code> as 
+     * the initial capacity for the underlying map.
+     * 
+     * @param mapCapacity the initial map capacity.
+     */
+    public BinomialHeap(final int mapCapacity) {
+        this.map = new HashMap<>(mapCapacity);
     }
     
     /**

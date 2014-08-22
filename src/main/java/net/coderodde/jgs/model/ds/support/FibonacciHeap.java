@@ -1,8 +1,6 @@
 package net.coderodde.jgs.model.ds.support;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import net.coderodde.jgs.model.ds.MinPriorityQueue;
@@ -12,7 +10,7 @@ import net.coderodde.jgs.model.ds.MinPriorityQueue;
  * This class implements Fibonacci heap.
  *
  * @author Rodion Efremov
- * @version 1.618033 (28.12.2013)
+ * @version 1.6
  * 
  * @param <E> the element type.
  * @param <P> the priority key type.
@@ -98,6 +96,13 @@ extends MinPriorityQueue<E, P> {
     private int size;
 
     private Node<E, P>[] array;
+
+    /**
+     * Construct a new {@code FibonacciHeap} with default settings.
+     */
+    public FibonacciHeap() {
+        this(DEFAULT_MAP_CAPACITY);
+    }
     
     /**
      * Constructs a new {@code FibonacciHeap} with the given capacity for the 
@@ -108,13 +113,6 @@ extends MinPriorityQueue<E, P> {
     public FibonacciHeap(final int mapCapacity) {
         map = new HashMap<>(mapCapacity);
         array = new Node[10];
-    }
-
-    /**
-     * Construct a new {@code FibonacciHeap} with default settings.
-     */
-    public FibonacciHeap() {
-        this(DEFAULT_MAP_CAPACITY);
     }
 
     /**

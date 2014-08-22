@@ -38,7 +38,7 @@ public class HeapDemoSuite implements DemoSuite {
     /**
      * The number of elements to load into each heap.
      */
-    private static final int N = 500000;
+    private static final int N = 1000000;
     
     /**
      * The seed for all the random number generators.

@@ -31,7 +31,7 @@ public class DecreaseKeySuite implements DemoSuite {
     /**
      * The amount of elements to load into each heap.
      */
-    private static final int N = 500000;
+    private static final int N = 1000000;
     
     /**
      * The seed for random number generators.
