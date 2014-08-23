@@ -6,14 +6,14 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
 
 /**
  * This class models a graph as a container of nodes extending 
- * {@link net.coderodde.jgs.model.Node}.
+ * {@link net.coderodde.jgs.model.AbstractNode}.
  * 
  * @author Rodion Efremov
  * @version 1.6 
  * @param <T> the actual node implementation extending
  * <code>net.coderodde.jgs.model.Node</code>.
  */
-public class Graph<T extends Node<T>> {
+public class Graph<T extends AbstractNode<T>> {
 
     /**
      * The name of this graph.
@@ -89,7 +89,7 @@ public class Graph<T extends Node<T>> {
         // We have to copy the map values (nodes) into an array because 
         // otherwise we would have to modify it (via remove()) which would
         // throw ConcurrentModificationException.
-        Node[] nodeArray = new Node[map.size()];
+        AbstractNode[] nodeArray = new AbstractNode[map.size()];
         int index = 0;
         
         // Copy.
@@ -98,7 +98,7 @@ public class Graph<T extends Node<T>> {
         }
         
         // Remove.
-        for (final Node node : nodeArray) {
+        for (final AbstractNode node : nodeArray) {
             removeNode((T) node);
         }
     }

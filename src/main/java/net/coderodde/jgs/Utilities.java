@@ -1,7 +1,7 @@
 package net.coderodde.jgs;
 
 import java.util.List;
-import net.coderodde.jgs.model.Node;
+import net.coderodde.jgs.model.AbstractNode;
 
 /**
  * This class holds various utility methods.
@@ -65,7 +65,7 @@ public class Utilities {
      * @param a a node.
      * @param b another node.
      */
-    public static final <T extends Node<T>>
+    public static final <T extends AbstractNode<T>>
         void checkNodesBelongToSameGraph(final T a, final T b) {
         if (a.getOwnerGraph() != b.getOwnerGraph()) {
             throw new IllegalStateException(
@@ -76,6 +76,43 @@ public class Utilities {
         }
     }
         
+    /**
+     * Checks that <code>d</code> is not infinite and if it is, throws an 
+     * exceptions with error message <code>errorMessage</code>.
+     * 
+     * @param d the double to check.
+     * @param errorMessage the error message to pass to the exception.
+     */
+    public static final void checkNotInfinite(final double d, 
+                                              final String errorMessage) {
+        if (Double.isFinite(d)) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    /**
+     * Checks that <code>d</code> is not NaN and if it is, throws an exceptions
+     * with error message <code>errorMessage</code>.
+     * 
+     * @param d the double to check.
+     * @param errorMessage the error message to pass to the exception.
+     */
+    public static final void checkNotNaN(final double d,
+                                         final String errorMessage) {
+        if (Double.isNaN(d)) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
+    
+    /**
+     * Checks that all the arrays are of equal length, and all contain "equal"
+     * elements as specified by <code>equals</code>.
+     * 
+     * @param <T> the actual element type of lists.
+     * @param lists the actual lists.
+     * 
+     * @return a boolean denoting equality. 
+     */
     public static final <T> boolean eq(final List<T>... lists) {
         if (lists.length < 2) {
             throw new IllegalArgumentException("Too few integer lists.");
@@ -97,18 +134,38 @@ public class Utilities {
         
         return true;
     }
+    
+    /**
+     * Prints a first-level title.
+     * 
+     * @param title the title to print. 
+     */
     public static void title1(final String title) {
         barImpl(title, '*');
     }
     
+    /**
+     * Prints a second-level title.
+     * 
+     * @param title the title to print. 
+     */
     public static void title2(final String title) {
         barImpl(title, '-');
     }
         
+    /**
+     * Prints a separator bar.
+     */
     public static void bar() {
         System.out.println(bar);
     }
     
+    /**
+     * The actual implementation of title-printing methods.
+     * 
+     * @param title the title to print.
+     * @param ch the character to draw the bars.
+     */
     private static void barImpl(String title, final char ch) {
         title = title.trim();
         final StringBuilder sb = new StringBuilder(80);

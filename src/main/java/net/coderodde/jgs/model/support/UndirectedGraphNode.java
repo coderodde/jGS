@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import net.coderodde.jgs.model.Node;
+import net.coderodde.jgs.model.AbstractNode;
 import static net.coderodde.jgs.Utilities.checkNodesBelongToSameGraph;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 
@@ -18,7 +18,7 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
  * @author Rodion Efremov
  * @version 1.6
  */
-public class UndirectedGraphNode extends Node<UndirectedGraphNode> {
+public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
 
     /**
      * The adjacency list.

@@ -9,7 +9,7 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
  * @version 1.6
  * @param <T> the actual graph node type extending this type.
  */
-public abstract class Node<T extends Node<T>> implements Iterable<T> {
+public abstract class AbstractNode<T extends AbstractNode<T>> implements Iterable<T> {
 
     /**
      * Holds the name of this node.
@@ -26,7 +26,7 @@ public abstract class Node<T extends Node<T>> implements Iterable<T> {
      * 
      * @param name the name of this node.
      */
-    public Node(final String name) {
+    public AbstractNode(final String name) {
         checkNotNull(name, "A node must have a name; null received.");
         this.name = name;
     }
