@@ -12,6 +12,7 @@ import net.coderodde.jgs.model.ds.MinPriorityQueue;
 import net.coderodde.jgs.model.ds.support.BinomialHeap;
 import net.coderodde.jgs.model.ds.support.DaryHeap;
 import net.coderodde.jgs.model.ds.support.FibonacciHeap;
+import net.coderodde.jgs.model.ds.support.PairingHeap;
 
 /**
  * This class implements a demo suite for profiling various heap data 
@@ -38,7 +39,7 @@ public class HeapDemoSuite implements DemoSuite {
     /**
      * The number of elements to load into each heap.
      */
-    private static final int N = 1000000;
+    private static final int N = 10000;
     
     /**
      * The seed for all the random number generators.
@@ -51,6 +52,7 @@ public class HeapDemoSuite implements DemoSuite {
     private final List<Integer> dary5Result;
     private final List<Integer> binomialResult;
     private final List<Integer> fibonacciResult;
+    private final List<Integer> pairingResult;
     
     /**
      * Constructs this demo suite.
@@ -65,6 +67,7 @@ public class HeapDemoSuite implements DemoSuite {
         dary5Result     = new ArrayList<>(N);
         binomialResult  = new ArrayList<>(N);
         fibonacciResult = new ArrayList<>(N);
+        pairingResult   = new ArrayList<>(N);
     }
     
     /**
@@ -76,6 +79,7 @@ public class HeapDemoSuite implements DemoSuite {
         profileDaryHeaps(seed);
         profileBinomialHeap(seed);
         profileFibonacciHeap(seed);
+        profilePairingHeap(seed);
         
         bar();
         System.out.println(
@@ -84,7 +88,8 @@ public class HeapDemoSuite implements DemoSuite {
                                                         dary4Result,
                                                         dary5Result,
                                                         binomialResult,
-                                                        fibonacciResult));
+                                                        fibonacciResult,
+                                                        pairingResult));
         
         title1("END OF PROFILING HEAPS");
         System.out.println();
@@ -181,6 +186,50 @@ public class HeapDemoSuite implements DemoSuite {
         
         while (heap.isEmpty() == false) {
             fibonacciResult.add(heap.extractMinimum());
+        }
+        
+        tb = System.currentTimeMillis();
+        
+        System.out.println("extractMinimum() in " + (tb - ta) + " ms.");
+        
+        total += tb - ta;
+        
+        System.out.println("Total: " + total + " ms.");
+    }
+    
+    /**
+     * Profile the {@link net.coderodde.jgs.model.ds.support.PairingHeap}.
+     * 
+     * @param seed the seed for random number generator.
+     */
+    private void profilePairingHeap(final long seed) {
+        final MinPriorityQueue<Integer, Integer> heap = new PairingHeap<>();
+        
+        title2(heap.getClass().getSimpleName());
+        
+        final Random rnd = new Random(seed);
+        
+        long total = 0L;
+        
+        long ta = System.currentTimeMillis();
+        
+        for (int i = 0; i != N; ++i) {
+            final Integer j = rnd.nextInt(N);
+            heap.add(j, j);
+        }
+        
+        long tb = System.currentTimeMillis();
+        
+        System.out.println("add() in " + (tb - ta) + " ms.");
+        
+        total += tb - ta;
+        
+        pairingResult.clear();
+        
+        ta = System.currentTimeMillis();
+        
+        while (heap.isEmpty() == false) {
+            pairingResult.add(heap.extractMinimum());
         }
         
         tb = System.currentTimeMillis();

@@ -11,6 +11,7 @@ import net.coderodde.jgs.model.ds.MinPriorityQueue;
 import net.coderodde.jgs.model.ds.support.BinomialHeap;
 import net.coderodde.jgs.model.ds.support.DaryHeap;
 import net.coderodde.jgs.model.ds.support.FibonacciHeap;
+import net.coderodde.jgs.model.ds.support.PairingHeap;
 
 /**
  * This class implements a demo suite for profiling 
@@ -31,7 +32,7 @@ public class DecreaseKeySuite implements DemoSuite {
     /**
      * The amount of elements to load into each heap.
      */
-    private static final int N = 1000000;
+    private static final int N = 10000;
     
     /**
      * The seed for random number generators.
@@ -44,6 +45,7 @@ public class DecreaseKeySuite implements DemoSuite {
     private final List<Integer> dary5Result;
     private final List<Integer> binomialResult;
     private final List<Integer> fibonacciResult;
+    private final List<Integer> pairingResult;
     
     /**
      * Constructs this demo suite.
@@ -56,6 +58,7 @@ public class DecreaseKeySuite implements DemoSuite {
         this.dary5Result     = new ArrayList<>(N);
         this.binomialResult  = new ArrayList<>(N);
         this.fibonacciResult = new ArrayList<>(N);
+        this.pairingResult   = new ArrayList<>(N);
         
         title1("DecreaseKeySuite.java, seed: " + seed);
     }
@@ -72,6 +75,7 @@ public class DecreaseKeySuite implements DemoSuite {
         profileDaryHeap(new DaryHeap<Integer, Integer>(5), dary5Result);
         profileBinomialHeap();
         profileFibonacciHeap();
+        profilePairingHeap();
         
         bar();
         
@@ -81,7 +85,8 @@ public class DecreaseKeySuite implements DemoSuite {
                                                         dary4Result,
                                                         dary5Result,
                                                         binomialResult,
-                                                        fibonacciResult));
+                                                        fibonacciResult,
+                                                        pairingResult));
         
         title1("END OF PROFILING HEAP DECREASE KEY");
         
@@ -176,6 +181,35 @@ public class DecreaseKeySuite implements DemoSuite {
         
         while (heap.isEmpty() == false) {
             fibonacciResult.add(heap.extractMinimum());
+        }
+    }
+
+    /**
+     * Profiles a {@link net.coderodde.jgs.model.ds.support.FibonacciHeap}.
+     */
+    private void profilePairingHeap() {
+        final MinPriorityQueue<Integer, Integer> heap = new PairingHeap<>();
+        
+        title2(heap.getClass().getSimpleName());
+        
+        for (int i = 0; i != N; ++i) {
+            heap.add(i, i);
+        }
+        
+        long ta = System.currentTimeMillis();
+        
+        for (int i = 0; i < N; i += 2) {
+            heap.decreasePriority(i, -i);
+        }
+        
+        long tb = System.currentTimeMillis();
+        
+        System.out.println("decreaseKey() in " + (tb - ta) + " ms.");
+        
+        pairingResult.clear();
+        
+        while (heap.isEmpty() == false) {
+            pairingResult.add(heap.extractMinimum());
         }
     }
 }

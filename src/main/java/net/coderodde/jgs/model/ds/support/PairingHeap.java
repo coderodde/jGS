@@ -1,8 +1,8 @@
 package net.coderodde.jgs.model.ds.support;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import net.coderodde.jgs.model.ds.MinPriorityQueue;
@@ -104,7 +104,7 @@ extends MinPriorityQueue<E, P> {
      */
     public PairingHeap(final int mapCapacity) {
         this.map = new HashMap<>(mapCapacity);
-        this.list = new LinkedList<>();
+        this.list = new ArrayDeque<>();
     }
     
     /**
@@ -295,7 +295,6 @@ extends MinPriorityQueue<E, P> {
      */
     private PairingHeapTree<E, P> 
         mergePairs(final Deque<PairingHeapTree<E, P>> list) {
-        
         while (list.size() > 1) {
             final PairingHeapTree<E, P> left  = list.removeFirst();
             final PairingHeapTree<E, P> right = list.removeFirst();
