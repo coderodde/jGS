@@ -2,6 +2,7 @@ package net.coderodde.jgs;
 
 import java.util.List;
 import net.coderodde.jgs.model.AbstractNode;
+import net.coderodde.jgs.model.Graph;
 
 /**
  * This class holds various utility methods.
@@ -75,6 +76,19 @@ public class Utilities {
             b.getOwnerGraph().toString());
         }
     }
+       
+    public static final <T extends AbstractNode<T>> 
+        void checkBelongsToGraph(final T node, final Graph<T> graph) {
+            checkNotNull(graph, "The graph is null.");
+            
+            if (node.getOwnerGraph() == null) {
+                throw new IllegalStateException(
+                "The node " + node + " belongs to no graph.");
+            } else if (node.getOwnerGraph() != graph) {
+                throw new IllegalStateException(
+                "The node " + node + " does not belong to the given graph.");
+            }
+        }
         
     /**
      * Checks that <code>d</code> is not infinite and if it is, throws an 
@@ -85,7 +99,7 @@ public class Utilities {
      */
     public static final void checkNotInfinite(final double d, 
                                               final String errorMessage) {
-        if (Double.isFinite(d)) {
+        if (Double.isInfinite(d)) {
             throw new IllegalArgumentException(errorMessage);
         }
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import static net.coderodde.jgs.Utilities.checkNotNull;
 
 /**
  * This abstract class defines the basic API for various shortest-path 
@@ -25,7 +26,11 @@ public abstract class PathFinder<T extends AbstractNode<T>> {
      */
     public abstract Path<T> search(final T source, final T target);
     
-    protected Path<T> constructPath(final T target, final Map<T, T> parentMap) {
+    protected Path<T> constructPath(final T target, 
+                                    final Map<T, T> parentMap) {
+        checkNotNull(target, "The target node is null.");
+        checkNotNull(parentMap, "The parent map is null.");
+        
         final List<T> list = new ArrayList<>();
         
         T current = target;
@@ -42,6 +47,10 @@ public abstract class PathFinder<T extends AbstractNode<T>> {
     protected Path<T> constructPath(final T touch,
                                     final Map<T, T> parentMapA,
                                     final Map<T, T> parentMapB) {
+        checkNotNull(touch, "The touch node is null.");
+        checkNotNull(parentMapA, "The forward parent map is null.");
+        checkNotNull(parentMapB, "The backward parent map is null.");
+        
         final List<T> list = new ArrayList<>();
         
         T current = touch;

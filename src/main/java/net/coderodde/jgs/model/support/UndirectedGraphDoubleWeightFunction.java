@@ -7,14 +7,29 @@ import static net.coderodde.jgs.Utilities.checkNotInfinite;
 import static net.coderodde.jgs.Utilities.checkNotNaN;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 import net.coderodde.jgs.model.AbstractWeightFunction;
+import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.Path;
 
+/**
+ * This class implements a real-valued weight function over an undirected graph.
+ * 
+ * @author Rodion Efremov
+ * @version 1.6
+ */
 public class UndirectedGraphDoubleWeightFunction 
-extends AbstractWeightFunction<DirectedGraphNode, Double> {
+extends AbstractWeightFunction<UndirectedGraphNode, Double> {
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param from the tail node of the edge.
+     * @param to the head node of the edge.
+     * @param weight the weight to associate with the edge
+     * <code>(from, to)</code>.
+     */
     @Override
-    public void put(DirectedGraphNode from, 
-                    DirectedGraphNode to, 
+    public void put(UndirectedGraphNode from, 
+                    UndirectedGraphNode to, 
                     Double weight) {
         checkNotNull(from, "The tail node is null.");
         checkNotNull(to, "The head node is null.");
@@ -24,7 +39,7 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
         
         checkNotNaN(weight, "The weight is NaN.");
         
-        Map<DirectedGraphNode, Double> partialMap = map.get(from);
+        Map<UndirectedGraphNode, Double> partialMap = map.get(from);
         
         if (partialMap == null) {
             partialMap = new HashMap<>();
@@ -35,13 +50,21 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param from the tail node of the edge.
+     * @param to the head node of the edge.
+     * 
+     * @return returns the weight of the edge <code>(from, to)</code>.
+     */
     @Override
-    public Double get(DirectedGraphNode from, DirectedGraphNode to) {
+    public Double get(UndirectedGraphNode from, UndirectedGraphNode to) {
         checkNotNull(from, "The tail node (from) is null.");
         checkNotNull(to, "The head node (to) is null.");
         
         // try from -> to -> weight.
-        Map<DirectedGraphNode, Double> partialMap = map.get(from);
+        Map<UndirectedGraphNode, Double> partialMap = map.get(from);
         final Double weight;
         
         if (partialMap == null) {
@@ -68,21 +91,28 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
         return weight;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param path the path whose weight to compute.
+     * 
+     * @return the weight of the path.
+     */
     @Override
-    public Double getPathWeight(Path<DirectedGraphNode> path) {
-        final Iterator<DirectedGraphNode> iterator = path.iterator();
+    public Double getPathWeight(Path<UndirectedGraphNode> path) {
+        final Iterator<UndirectedGraphNode> iterator = path.iterator();
         
         if (iterator.hasNext() == false) {
             return 0.0;
         }
         
-        DirectedGraphNode u = iterator.next();
+        UndirectedGraphNode u = iterator.next();
         
         if (iterator.hasNext() == false) {
             return 0.0;
         }
         
-        DirectedGraphNode v = iterator.next();
+        UndirectedGraphNode v = iterator.next();
         
         double weight = get(u, v);
         

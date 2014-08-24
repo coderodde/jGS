@@ -3,7 +3,6 @@ package net.coderodde.jgs.model.support;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import static net.coderodde.jgs.Utilities.checkBelongsToGraph;
 import static net.coderodde.jgs.Utilities.checkNotInfinite;
 import static net.coderodde.jgs.Utilities.checkNotNaN;
 import static net.coderodde.jgs.Utilities.checkNotNull;
@@ -12,13 +11,14 @@ import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.Path;
 
 /**
- * This class implements a real-valued weight function over a directed graph.
+ * This class implements an integer-valued weight function over an undirected 
+ * graph.
  * 
  * @author Rodion Efremov
  * @version 1.6
  */
-public class DirectedGraphDoubleWeightFunction 
-extends AbstractWeightFunction<DirectedGraphNode, Double> {
+public class UndirectedGraphIntegerWeightFunction 
+extends AbstractWeightFunction<UndirectedGraphNode, Integer>{
 
     /**
      * {@inheritDoc}
@@ -29,18 +29,20 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
      * <code>(from, to)</code>.
      */
     @Override
-    public void put(DirectedGraphNode from, 
-                    DirectedGraphNode to, 
-                    Double weight) {
+    public void put(UndirectedGraphNode from, 
+                    UndirectedGraphNode to, 
+                    Integer weight) {
         checkNotNull(from, "The tail node is null.");
         checkNotNull(to, "The head node is null.");
         checkNotNull(weight, "The weight is null.");
+        
+        
         
         checkNotInfinite(weight, "The weight is infinite: " + weight);
         
         checkNotNaN(weight, "The weight is NaN.");
         
-        Map<DirectedGraphNode, Double> partialMap = map.get(from);
+        Map<UndirectedGraphNode, Integer> partialMap = map.get(from);
         
         if (partialMap == null) {
             partialMap = new HashMap<>();
@@ -60,23 +62,35 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
      * @return returns the weight of the edge <code>(from, to)</code>.
      */
     @Override
-    public Double get(DirectedGraphNode from, DirectedGraphNode to) {
+    public Integer get(UndirectedGraphNode from, UndirectedGraphNode to) {
         checkNotNull(from, "The tail node (from) is null.");
         checkNotNull(to, "The head node (to) is null.");
         
-        Map<DirectedGraphNode, Double> partialMap = map.get(from);
+        // try from -> to -> weight.
+        Map<UndirectedGraphNode, Integer> partialMap = map.get(from);
+        final Integer weight;
         
         if (partialMap == null) {
-            throw new IllegalStateException(
-                    from + " is not mapped to a partial map.");
+            // Try to -> from -> weight.
+            partialMap = map.get(to);
+            
+            if (partialMap == null) {
+                throw new IllegalStateException("The weight not found.");
+            }
+            
+            weight = partialMap.get(from);
+            
+            if (weight == null) {
+                throw new IllegalStateException("The weight not found.");
+            }
+        } else {
+            weight = partialMap.get(to);
+            
+            if (weight == null) {
+                throw new IllegalStateException("The weight not found.");
+            }
         }
-        
-        final Double weight = partialMap.get(to);
-        
-        if (weight == null) {
-            throw new IllegalStateException(to + " is not mapped to a weight.");
-        }
-        
+            
         return weight;
     }
 
@@ -88,22 +102,22 @@ extends AbstractWeightFunction<DirectedGraphNode, Double> {
      * @return the weight of the path.
      */
     @Override
-    public Double getPathWeight(Path<DirectedGraphNode> path) {
-        final Iterator<DirectedGraphNode> iterator = path.iterator();
+    public Integer getPathWeight(Path<UndirectedGraphNode> path) {
+        final Iterator<UndirectedGraphNode> iterator = path.iterator();
         
         if (iterator.hasNext() == false) {
-            return 0.0;
+            return 0;
         }
         
-        DirectedGraphNode u = iterator.next();
+        UndirectedGraphNode u = iterator.next();
         
         if (iterator.hasNext() == false) {
-            return 0.0;
+            return 0;
         }
         
-        DirectedGraphNode v = iterator.next();
+        UndirectedGraphNode v = iterator.next();
         
-        double weight = get(u, v);
+        int weight = get(u, v);
         
         while (iterator.hasNext()) {
             u = v;

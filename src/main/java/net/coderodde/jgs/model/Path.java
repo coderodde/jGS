@@ -15,15 +15,11 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
  */
 public class Path<T extends AbstractNode<T>> 
 implements Iterable<T> {
-
+    
     /**
      * The node list constituting the path.
      */
     private final List<T> nodeList;
-    
-    public Path() {
-        this.nodeList = new ArrayList<>();
-    }
     
     /**
      * Constructs a new path holding the nodes of <code>list</code>.
@@ -36,6 +32,8 @@ implements Iterable<T> {
         final Set<T> filter = new HashSet<>(list.size());
         
         for (final T node : list) {
+            checkNotNull(node.getOwnerGraph(), 
+                         "The node " + node + " does not belong to a graph.");   
             filter.add(node);
         }
         

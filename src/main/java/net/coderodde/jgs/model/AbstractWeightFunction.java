@@ -2,6 +2,7 @@ package net.coderodde.jgs.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import static net.coderodde.jgs.Utilities.checkNotNull;
 
 public abstract class AbstractWeightFunction<T extends AbstractNode<T>, 
                                              W extends Comparable<? super W>> {
@@ -12,7 +13,7 @@ public abstract class AbstractWeightFunction<T extends AbstractNode<T>,
     protected final Map<T, Map<T, W>> map;
     
     /**
-     * Initializes the map.
+     * Initializes the map and binds it to the specified graph.
      */
     protected AbstractWeightFunction() {
         this.map = new HashMap<>();
@@ -51,4 +52,11 @@ public abstract class AbstractWeightFunction<T extends AbstractNode<T>,
      * @return the weight of the specified path.
      */
     public abstract W getPathWeight(final Path<T> path);
+    
+    /**
+     * Clears this weight function.
+     */
+    public void clear() {
+        this.map.clear();
+    }
 }
