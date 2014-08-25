@@ -173,6 +173,33 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
     public final String toString() {
         return "[UndirectedGraphNode " + name + "]";
     }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @param o the object to compare against.
+     * 
+     * @return <code>true</code> if the two objects are considered "same";
+     * <code>false</code> otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof UndirectedGraphNode)) {
+            return false;
+        }
+        
+        return getName().equals(((UndirectedGraphNode) o).getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the hash code of this node.
+     */
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
     
     /**
      * This class implements an iterator over enclosing node's neighbors.

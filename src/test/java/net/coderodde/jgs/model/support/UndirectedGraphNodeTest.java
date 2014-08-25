@@ -39,9 +39,6 @@ public class UndirectedGraphNodeTest {
         G2.clear();
     }
     
-    /**
-     * Test of clear method, of class UndirectedGraphNode.
-     */
     @Test
     public void testClear() {
         G1.addNode(a);
@@ -85,9 +82,6 @@ public class UndirectedGraphNodeTest {
         assertEquals(0, a.parentsListSize());
     }
 
-    /**
-     * Test of connectTo method, of class UndirectedGraphNode.
-     */
     @Test
     public void testConnectTo() {
         G1.addNode(a);
@@ -112,9 +106,6 @@ public class UndirectedGraphNodeTest {
         assertFalse(c.isConnectedTo(b));
     }
 
-    /**
-     * Test of isConnectedTo method, of class UndirectedGraphNode.
-     */
     @Test
     public void testIsConnectedTo() {
         G1.addNode(a);
@@ -135,9 +126,6 @@ public class UndirectedGraphNodeTest {
         assertFalse(b.isConnectedTo(a));
     }
 
-    /**
-     * Test of disconnectFrom method, of class UndirectedGraphNode.
-     */
     @Test
     public void testDisconnectFrom() {
         G1.addNode(a);
@@ -164,9 +152,6 @@ public class UndirectedGraphNodeTest {
         assertFalse(c.isConnectedTo(a));
     }
 
-    /**
-     * Test of parents method, of class UndirectedGraphNode.
-     */
     @Test
     public void testParents() {
         G1.addNode(a);
@@ -196,9 +181,6 @@ public class UndirectedGraphNodeTest {
         assertFalse(iterator.hasNext());
     }
 
-    /**
-     * Test of iterator method, of class UndirectedGraphNode.
-     */
     @Test
     public void testIterator() {
         G1.addNode(a);
@@ -228,9 +210,6 @@ public class UndirectedGraphNodeTest {
         assertFalse(iterator.hasNext());
     }
 
-    /**
-     * Test of childrenListSize method, of class UndirectedGraphNode.
-     */
     @Test
     public void testChildrenListSize() {
         assertEquals(a.childrenListSize(), 0);
@@ -257,10 +236,7 @@ public class UndirectedGraphNodeTest {
         
         assertEquals(a.childrenListSize(), 0);
     }
-
-    /**
-     * Test of parentsListSize method, of class UndirectedGraphNode.
-     */
+    
     @Test
     public void testParentsListSize() {
         assertEquals(a.parentsListSize(), 0);
@@ -287,10 +263,7 @@ public class UndirectedGraphNodeTest {
         
         assertEquals(a.parentsListSize(), 0);
     }
-
-    /**
-     * Test of toString method, of class UndirectedGraphNode.
-     */
+    
     @Test
     public void testToString() {
         assertEquals(a.toString(), "[UndirectedGraphNode A]");

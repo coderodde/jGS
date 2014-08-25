@@ -7,19 +7,17 @@ import static net.coderodde.jgs.Utilities.checkNotInfinite;
 import static net.coderodde.jgs.Utilities.checkNotNaN;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 import net.coderodde.jgs.model.AbstractWeightFunction;
-import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.Path;
 
 /**
- * This class implements an integer-valued weight function over an undirected 
- * graph.
+ * This class implements a real-valued weight function over an undirected graph.
  * 
  * @author Rodion Efremov
  * @version 1.6
  */
 public class UndirectedGraphIntegerWeightFunction 
-extends AbstractWeightFunction<UndirectedGraphNode, Integer>{
-
+extends AbstractWeightFunction<UndirectedGraphNode, Integer> {
+    
     /**
      * {@inheritDoc}
      * 
@@ -29,27 +27,43 @@ extends AbstractWeightFunction<UndirectedGraphNode, Integer>{
      * <code>(from, to)</code>.
      */
     @Override
-    public void put(UndirectedGraphNode from, 
-                    UndirectedGraphNode to, 
-                    Integer weight) {
+    public void put(final UndirectedGraphNode from, 
+                    final UndirectedGraphNode to, 
+                    final Integer weight) {
         checkNotNull(from, "The tail node is null.");
         checkNotNull(to, "The head node is null.");
         checkNotNull(weight, "The weight is null.");
-        
-        
-        
         checkNotInfinite(weight, "The weight is infinite: " + weight);
-        
         checkNotNaN(weight, "The weight is NaN.");
         
         Map<UndirectedGraphNode, Integer> partialMap = map.get(from);
         
         if (partialMap == null) {
+            // Once here, we are creating a new edge weight.
             partialMap = new HashMap<>();
             partialMap.put(to, weight);
             map.put(from, partialMap);
+            
+            // Another direction:
+            partialMap = new HashMap<>();
+            partialMap.put(from, weight);
+            map.put(to, partialMap);
         } else {
+            // Once here, we have to update an existing weight.
             partialMap.put(to, weight);
+            
+            // Another direction:
+            Map<UndirectedGraphNode, Integer> tmpmap = map.get(to);
+            
+            if (tmpmap == null) {
+                tmpmap = new HashMap<>();
+                tmpmap.put(from, weight);
+                map.put(to, tmpmap);
+                return;
+            }
+            
+            // Secondary map exists and is referenced by tmpmap.
+            tmpmap.put(from, weight);
         }
     }
 
@@ -68,29 +82,17 @@ extends AbstractWeightFunction<UndirectedGraphNode, Integer>{
         
         // try from -> to -> weight.
         Map<UndirectedGraphNode, Integer> partialMap = map.get(from);
-        final Integer weight;
         
         if (partialMap == null) {
-            // Try to -> from -> weight.
-            partialMap = map.get(to);
-            
-            if (partialMap == null) {
-                throw new IllegalStateException("The weight not found.");
-            }
-            
-            weight = partialMap.get(from);
-            
-            if (weight == null) {
-                throw new IllegalStateException("The weight not found.");
-            }
-        } else {
-            weight = partialMap.get(to);
-            
-            if (weight == null) {
-                throw new IllegalStateException("The weight not found.");
-            }
+            throw new IllegalStateException("The weight not found.");
         }
-            
+        
+        final Integer weight = partialMap.get(to);
+        
+        if (weight == null) {
+            throw new IllegalStateException("The weight not found.");
+        }
+        
         return weight;
     }
 

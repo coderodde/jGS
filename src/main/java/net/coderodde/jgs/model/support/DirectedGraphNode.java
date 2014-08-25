@@ -192,6 +192,33 @@ public class DirectedGraphNode extends AbstractNode<DirectedGraphNode> {
     public final String toString() {
         return "[DirectedGraphNode " + name + "]";
     }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @param o the object to test against.
+     * 
+     * @return <code>true</code> if the two objects are considered the "same";
+     * <code>false</code> otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DirectedGraphNode)) {
+            return false;
+        }
+        
+        return getName().equals(((DirectedGraphNode) o).getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the hash code of this node.
+     */
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
     
     /**
      * This class implements an iterator over enclosing node's children.

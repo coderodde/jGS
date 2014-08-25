@@ -1,5 +1,6 @@
 package net.coderodde.jgs.model;
 
+import java.util.Objects;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 
 /**
@@ -114,8 +115,33 @@ public abstract class AbstractNode<T extends AbstractNode<T>> implements Iterabl
      */
     public abstract int parentsListSize();
     
+    /**
+     * Returns the string representation of this node.
+     * 
+     * @return the string representation of this node.
+     */
     @Override
     public abstract String toString();
+    
+    /**
+     * Returns <code>true</code> if this node is considered to be same as
+     * <code>o</code>.
+     * 
+     * @param o the object to compare against.
+     * 
+     * @return <code>true</code> if the two objects are "same"; 
+     * <code>false</code> otherwise.
+     */
+    @Override
+    public abstract boolean equals(final Object o);
+
+    /**
+     * Returns a hash code of the node.
+     * 
+     * @return a hash code.
+     */
+    @Override
+    public abstract int hashCode();
     
     protected void addEdgeAmountDifference(final int diff) {
         ownerGraph.edgeAmount += diff;

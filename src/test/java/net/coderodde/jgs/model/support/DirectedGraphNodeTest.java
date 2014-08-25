@@ -39,9 +39,6 @@ public class DirectedGraphNodeTest {
         G2.clear();
     }
     
-    /**
-     * Test of clear method, of class DirectedGraphNode.
-     */
     @Test
     public void testClear() {
         G1.addNode(a);
@@ -85,9 +82,6 @@ public class DirectedGraphNodeTest {
         assertEquals(0, a.parentsListSize());
     }
 
-    /**
-     * Test of connectTo method, of class DirectedGraphNode.
-     */
     @Test
     public void testConnectTo() {
         G1.addNode(a);
@@ -112,9 +106,6 @@ public class DirectedGraphNodeTest {
         assertFalse(c.isConnectedTo(b));
     }
 
-    /**
-     * Test of isConnectedTo method, of class DirectedGraphNode.
-     */
     @Test
     public void testIsConnectedTo() {
         G1.addNode(a);
@@ -135,9 +126,6 @@ public class DirectedGraphNodeTest {
         assertFalse(b.isConnectedTo(a));
     }
 
-    /**
-     * Test of disconnectFrom method, of class DirectedGraphNode.
-     */
     @Test
     public void testDisconnectFrom() {
         G1.addNode(a);
@@ -169,9 +157,6 @@ public class DirectedGraphNodeTest {
         assertFalse(c.isConnectedTo(a));
     }
 
-    /**
-     * Test of parents method, of class DirectedGraphNode.
-     */
     @Test
     public void testParents() {
         G1.addNode(a);
@@ -199,9 +184,6 @@ public class DirectedGraphNodeTest {
         assertFalse(iterator.hasNext());
     }
 
-    /**
-     * Test of iterator method, of class DirectedGraphNode.
-     */
     @Test
     public void testIterator() {
         G1.addNode(a);
@@ -231,9 +213,6 @@ public class DirectedGraphNodeTest {
         assertFalse(iterator.hasNext());
     }
 
-    /**
-     * Test of childrenListSize method, of class DirectedGraphNode.
-     */
     @Test
     public void testChildrenListSize() {
         assertEquals(a.childrenListSize(), 0);
@@ -274,10 +253,7 @@ public class DirectedGraphNodeTest {
         
         assertEquals(0, a.childrenListSize());
     }
-
-    /**
-     * Test of parentsListSize method, of class DirectedGraphNode.
-     */
+    
     @Test
     public void testParentsListSize() {
         assertEquals(a.parentsListSize(), 0);
@@ -313,9 +289,6 @@ public class DirectedGraphNodeTest {
         assertEquals(0, a.parentsListSize());
     }
 
-    /**
-     * Test of toString method, of class DirectedGraphNode.
-     */
     @Test
     public void testToString() {
         assertEquals(a.toString(), "[DirectedGraphNode A]");

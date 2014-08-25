@@ -4,23 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.Path;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class DirectedGraphDoubleWeightFunctionTest {
+public class DirectedGraphIntegerWeightFunctionTest {
     
-    private static final double e = 0.0001;
-    
-    private final DirectedGraphDoubleWeightFunction f;
+    private final DirectedGraphIntegerWeightFunction f;
     private final Graph<DirectedGraphNode> graph;
     private final DirectedGraphNode a;
     private final DirectedGraphNode b;
     private final DirectedGraphNode c;
     
-    public DirectedGraphDoubleWeightFunctionTest() {
+    public DirectedGraphIntegerWeightFunctionTest() {
         graph = new Graph<>("My graph");
-        f     = new DirectedGraphDoubleWeightFunction();
+        f     = new DirectedGraphIntegerWeightFunction();
         a     = new DirectedGraphNode("A");
         b     = new DirectedGraphNode("B");
         c     = new DirectedGraphNode("C");
@@ -37,10 +35,10 @@ public class DirectedGraphDoubleWeightFunctionTest {
 
     @Test
     public void testPutAndGet() {
-        f.put(a, b, 10.5);
-        assertEquals(10.5, f.get(a, b), e);
-        f.put(b, c, 3.42);
-        assertEquals(3.42, f.get(b, c), e);
+        f.put(a, b, 10);
+        assertEquals((Integer) 10, f.get(a, b));
+        f.put(b, c, 3);
+        assertEquals((Integer) 3, f.get(b, c));
     }
 
     @Test
@@ -56,23 +54,23 @@ public class DirectedGraphDoubleWeightFunctionTest {
         
         final Path<DirectedGraphNode> path = new Path<>(list);
         
-        f.put(a, b, 2.4);
-        f.put(b, c, 4.6);
+        f.put(a, b, 2);
+        f.put(b, c, 4);
         
-        assertEquals(7.0, f.getPathWeight(path), e);
+        assertEquals((Integer) 6, f.getPathWeight(path));
     }
     
     @Test(expected = IllegalStateException.class)
     public void testThrowsOnAntisymmetricEdge() {
-        f.put(a, b, 4.0);
-        assertEquals(f.get(a, b), 4.0, e);
+        f.put(a, b, 4);
+        assertEquals(f.get(a, b), (Integer) 4);
         f.get(b, a);
     }
     
     @Test(expected = IllegalStateException.class)
     public void testPathThrowsOnDisconnectedEdge() {
-        f.put(a, b, 3.5);
-        assertEquals(f.get(a, b), 3.5, e);
+        f.put(a, b, 5);
+        assertEquals(f.get(a, b), (Integer) 5);
         
         graph.addNode(a);
         graph.addNode(b);
@@ -81,8 +79,8 @@ public class DirectedGraphDoubleWeightFunctionTest {
         a.connectTo(b);
         c.connectTo(b); // the antiparallel edge of the required edge.
         
-        f.put(c, b, 4.5);
-        f.put(b, c, 3.6);
+        f.put(c, b, 4);
+        f.put(b, c, 3);
         
         final List<DirectedGraphNode> list = new ArrayList<>();
         
