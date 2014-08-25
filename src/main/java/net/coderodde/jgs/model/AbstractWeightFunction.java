@@ -2,10 +2,9 @@ package net.coderodde.jgs.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import static net.coderodde.jgs.Utilities.checkNotNull;
 
 public abstract class AbstractWeightFunction<T extends AbstractNode<T>, 
-                                             W extends Comparable<? super W>> {
+                                             W> {
 
     /**
      * The actual map.

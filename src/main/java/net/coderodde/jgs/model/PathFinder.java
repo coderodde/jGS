@@ -12,9 +12,15 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
  * 
  * @author Rodion Efremov
  * @param <T> the actual node implementation. 
+ * @param <W> the weight type.
  */
-public abstract class PathFinder<T extends AbstractNode<T>> {
+public abstract class PathFinder<T extends AbstractNode<T>, W> {
 
+    /**
+     * The sentinel value used to denote non-existent path.
+     */
+    protected final Path<T> emptyPath = new Path<>(Collections.<T>emptyList());
+    
     /**
      * Performs the search for the path from node <code>source</code> to node
      * <code>target</code>.
@@ -26,6 +32,14 @@ public abstract class PathFinder<T extends AbstractNode<T>> {
      */
     public abstract Path<T> search(final T source, final T target);
     
+    /**
+     * Constructs a path.
+     * 
+     * @param target the target node.
+     * @param parentMap the map mapping each node to its parent node on a path.
+     * 
+     * @return a path. 
+     */
     protected Path<T> constructPath(final T target, 
                                     final Map<T, T> parentMap) {
         checkNotNull(target, "The target node is null.");
@@ -44,6 +58,15 @@ public abstract class PathFinder<T extends AbstractNode<T>> {
         return new Path<>(list);
     }
     
+    /**
+     * Constructs a path computed by an bidirectional search algorithm.
+     * 
+     * @param touch the "touch" node.
+     * @param parentMapA the forward parent map.
+     * @param parentMapB the backward parent map.
+     * 
+     * @return a path.
+     */
     protected Path<T> constructPath(final T touch,
                                     final Map<T, T> parentMapA,
                                     final Map<T, T> parentMapB) {

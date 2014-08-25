@@ -1,8 +1,11 @@
 package net.coderodde.jgs;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import net.coderodde.jgs.model.AbstractNode;
 import net.coderodde.jgs.model.Graph;
+import net.coderodde.jgs.model.support.DirectedGraphNode;
 
 /**
  * This class holds various utility methods.
@@ -172,6 +175,37 @@ public class Utilities {
      */
     public static void bar() {
         System.out.println(bar);
+    }
+    
+    public static final Graph<DirectedGraphNode> 
+            createRandomDirectedGraph(final int size,
+                                      int edges,
+                                      final String name,
+                                      final Random rnd) {
+        checkNotNull(name, "The graph name is null.");
+        checkNotNull(rnd, "The random number generator is null.");
+        
+        final Graph<DirectedGraphNode> graph = new Graph<>(name);
+        final List<DirectedGraphNode> nodeList = new ArrayList<>(size);
+        
+        for (int i = 0; i < size; ++i) {
+            final DirectedGraphNode node = new DirectedGraphNode("" + i);
+            graph.addNode(node);
+            nodeList.add(node);
+        }
+        
+        if (edges > (int)(0.8 * size * size)) {
+            edges = (int)(0.8 * size * size);
+        }
+        
+        while (edges > 0) {
+            final DirectedGraphNode tail = nodeList.get(rnd.nextInt(size));
+            final DirectedGraphNode head = nodeList.get(rnd.nextInt(size));
+            tail.connectTo(head);
+            edges--;
+        }
+        
+        return graph;
     }
     
     /**
