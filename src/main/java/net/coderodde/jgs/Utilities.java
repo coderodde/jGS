@@ -1,10 +1,13 @@
 package net.coderodde.jgs;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.coderodde.jgs.model.AbstractNode;
 import net.coderodde.jgs.model.Graph;
+import net.coderodde.jgs.model.GraphNodeCoordinates;
+import net.coderodde.jgs.model.support.DirectedGraphDoubleWeightFunction;
 import net.coderodde.jgs.model.support.DirectedGraphNode;
 
 /**
@@ -175,6 +178,87 @@ public class Utilities {
      */
     public static void bar() {
         System.out.println(bar);
+    }
+    
+    /**
+     * This class defines a two-tuple.
+     * 
+     * @param <F> the type of the first component.
+     * @param <S> the type of the second component.
+     */
+    public static final class Pair<F, S> {
+        public F first;
+        public S second;
+        
+        /**
+         * Constructs a new pair with the given components.
+         * 
+         * @param first the first component.
+         * @param second the second component.
+         */
+        public Pair(final F first, final S second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+    
+    public static final class Triple<F, S, T> {
+        public F first;
+        public S second;
+        public T third;
+        
+        public Triple(final F first, final S second, final T third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+        }
+    }
+    
+    public static final Triple<Graph<DirectedGraphNode>, 
+                               DirectedGraphDoubleWeightFunction,
+                               GraphNodeCoordinates>
+            createRandomDirectedGraphWithCoordinates(final int size,
+                                                     final int edges,
+                                                     final double maxx,
+                                                     final double maxy,
+                                                     final double edgeFactor,
+                                                     final String graphName,
+                                                     final Random rnd) {
+        final Graph<DirectedGraphNode> graph = new Graph<>(graphName);
+        final GraphNodeCoordinates coords = new GraphNodeCoordinates();
+        final List<DirectedGraphNode> list = new ArrayList<>(size);
+        final DirectedGraphDoubleWeightFunction f = 
+          new DirectedGraphDoubleWeightFunction();
+        
+        for (int i = 0; i < size; ++i) {
+            final DirectedGraphNode node = new DirectedGraphNode("" + i);
+            graph.addNode(node);
+            list.add(node);
+            
+            final double x = maxx * rnd.nextDouble();
+            final double y = maxy * rnd.nextDouble();
+            
+            coords.put(node, new Point.Double(x, y));
+        }
+        
+        int e = edges;
+        final int maxEdges = (int)(0.8 * size * size);
+        
+        if (e > maxEdges) {
+            e = maxEdges;
+        }
+        
+        while (e > 0) {
+            final DirectedGraphNode tail = list.get(rnd.nextInt(size));
+            final DirectedGraphNode head = list.get(rnd.nextInt(size));
+            tail.connectTo(head);
+            f.put(tail, 
+                  head, 
+                  edgeFactor * coords.get(tail).distance(coords.get(head)));
+            --e;
+        }
+         
+        return new Triple<>(graph, f, coords);
     }
     
     public static final Graph<DirectedGraphNode> 

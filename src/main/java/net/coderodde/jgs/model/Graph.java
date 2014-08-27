@@ -68,6 +68,10 @@ public class Graph<T extends AbstractNode<T>> {
         return true;
     }
     
+    public T getByName(final String name) {
+        return map.get(name);
+    }
+    
     /**
      * Removes a node from this graph if it is contained by the graph.
      * 

@@ -25,4 +25,8 @@ public abstract class Weight<T> {
      * @return the result of the operation.
      */
     public abstract T append(final T a, final T b);
+    
+    public T read(final Object what) {
+        return (T) what;
+    }
 }

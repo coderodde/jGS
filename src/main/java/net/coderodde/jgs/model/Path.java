@@ -82,6 +82,34 @@ implements Iterable<T> {
         return new NodeIterator();
     }
     
+    public boolean equals(final Object o) {
+        if (!(o instanceof Path)) {
+            return false;
+        }
+        
+        final Iterator<T> it1 = this.iterator();
+        final Iterator<T> it2 = ((Path<T>) o).iterator();
+        
+        while (it1.hasNext()) {
+            if (it2.hasNext() == false) {
+                return false;
+            }
+            
+            final T node1 = it1.next();
+            final T node2 = it2.next();
+            
+            if (!(node1.equals(node2))) {
+                return false;
+            }
+        }
+        
+        if (it2.hasNext()) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     /**
      * The actual iterator implementation.
      */
