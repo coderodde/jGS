@@ -3,6 +3,7 @@ package net.coderodde.jgs.support;
 import java.util.Random;
 import net.coderodde.jgs.DemoSuite;
 import net.coderodde.jgs.Utilities.Triple;
+import static net.coderodde.jgs.Utilities.bar;
 import static net.coderodde.jgs.Utilities.createRandomDirectedGraphWithCoordinates;
 import static net.coderodde.jgs.Utilities.title1;
 import static net.coderodde.jgs.Utilities.title2;
@@ -22,10 +23,14 @@ import net.coderodde.jgs.model.support.DirectedGraphNode;
 import net.coderodde.jgs.model.support.DoubleWeight;
 import net.coderodde.jgs.model.support.EuclidianDoubleHeuristicFunction;
 
-public class ShortestPathSuite implements DemoSuite {
+public class SparseGraphShortestPathSuite implements DemoSuite {
 
-    private static final int NODE_AMOUNT = 1000;
-    private static final double EDGE_AMOUNT_FACTOR = 0.75;
+    private static final int NODE_AMOUNT = 100000;
+    
+    /**
+     * The average node in- or out-degrees are 4.
+     */
+    private static final double EDGE_AMOUNT_FACTOR = 4;
     private static final double EDGE_LENGTH_FACTOR = 1.2;
     private static final double BOX_SIDE_LENGTH = 1000.0;
     
@@ -37,15 +42,15 @@ public class ShortestPathSuite implements DemoSuite {
     
     private Path<DirectedGraphNode> path;
     
-    public ShortestPathSuite() {
+    public SparseGraphShortestPathSuite() {
         this.seed = System.currentTimeMillis();
-        title1("ShortestPathSuite.java, seed: " + seed);
+        title1("SparseGraphShortestPathSuite.java, seed: " + seed);
         final Triple<Graph<DirectedGraphNode>,
                      DirectedGraphDoubleWeightFunction,
                      GraphNodeCoordinates> data =
                 createRandomDirectedGraphWithCoordinates(
                         NODE_AMOUNT, 
-                        (int)(EDGE_AMOUNT_FACTOR * NODE_AMOUNT * NODE_AMOUNT), 
+                        (int)(EDGE_AMOUNT_FACTOR * NODE_AMOUNT), 
                         BOX_SIDE_LENGTH,
                         BOX_SIDE_LENGTH,
                         EDGE_LENGTH_FACTOR,
@@ -67,7 +72,9 @@ public class ShortestPathSuite implements DemoSuite {
         profileBidirectionalDijkstrasAlgorithm();
         profileAStarAlgorithm();
         profileBidirectionalAStarAlgorithm();
+        bar();
         System.out.println("Path length: " + f.getPathWeight(path));
+        System.out.println();
     }
     
     private void profileDijkstrasAlgorithm() {

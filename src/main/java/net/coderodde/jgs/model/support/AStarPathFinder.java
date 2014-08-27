@@ -83,7 +83,7 @@ extends PathFinder<T, W> {
                     // This is the first time 'child' is discovered.
                     final W fValue = 
                         weight.append(tmpg,
-                                      weight.read(hf.evaluate(child, target)));
+                                      hf.evaluate(child, target));
                     openSet.add(child, fValue);
                     parentMap.put(child, current);
                     distanceMap.put(child, tmpg);
@@ -91,7 +91,7 @@ extends PathFinder<T, W> {
                     // Improving the distance to 'child'.
                     final W fValue =
                         weight.append(tmpg,
-                                      weight.read(hf.evaluate(child, target)));
+                                      hf.evaluate(child, target));
                     openSet.decreasePriority(child, fValue);
                     parentMap.put(child, current);
                     distanceMap.put(child, tmpg);
