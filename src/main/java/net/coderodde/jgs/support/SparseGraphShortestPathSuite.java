@@ -17,6 +17,7 @@ import net.coderodde.jgs.model.ds.support.DaryHeap;
 import net.coderodde.jgs.model.ds.support.FibonacciHeap;
 import net.coderodde.jgs.model.ds.support.PairingHeap;
 import net.coderodde.jgs.model.support.AStarPathFinder;
+import net.coderodde.jgs.model.support.BidirectionalDijkstraPathFinder;
 import net.coderodde.jgs.model.support.DijkstraPathFinder;
 import net.coderodde.jgs.model.support.DirectedGraphDoubleWeightFunction;
 import net.coderodde.jgs.model.support.DirectedGraphNode;
@@ -152,7 +153,33 @@ public class SparseGraphShortestPathSuite implements DemoSuite {
     
     private void profileBidirectionalDijkstrasAlgorithmOn(
             final MinPriorityQueue<DirectedGraphNode, Double> queue) {
+        if (queue instanceof DaryHeap) {
+            System.out.print(queue.getClass().getSimpleName() + ", degree " +
+                             ((DaryHeap) queue).getDegree() + ": ");
+        } else {
+            System.out.print(queue.getClass().getSimpleName() + ": ");
+        }
         
+        long ta = System.currentTimeMillis();
+        
+        PathFinder<DirectedGraphNode, Double> pf = 
+                new BidirectionalDijkstraPathFinder<>(f, 
+                                      new DoubleWeight(), 
+                                      queue.spawn());
+        
+        final Path<DirectedGraphNode> p = pf.search(source, target);
+        
+        long tb = System.currentTimeMillis();
+        
+        System.out.println("" + (tb - ta) + " ms.");
+        
+        if (path == null) {
+            path = p;
+        } else if (!path.equals(p)) {
+            System.out.println("Algorithms disagreed. Latest: " + 
+                               f.getPathWeight(path) +
+                               ", current: " + f.getPathWeight(p));
+        }
     }
     
     private void profileAStarAlgorithmOn(

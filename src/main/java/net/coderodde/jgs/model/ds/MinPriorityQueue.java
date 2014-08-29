@@ -40,6 +40,13 @@ public abstract class MinPriorityQueue<E, P extends Comparable<? super P>> {
     public abstract E extractMinimum();
     
     /**
+     * Returns but does not remove the minimum element.
+     * 
+     * @return the minimum element. 
+     */
+    public abstract E min();
+    
+    /**
      * Returns the amount of elements in the heap.
      * 
      * @return the amount of elements in the heap. 

@@ -7,13 +7,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * This class tests 
- * <code>net.coderodde.jgs.model.ds.support.PairingHeap</code>.
- * 
- * @author Rodion Efremov
- * @version 1.6
- */
 public class PairingHeapTest {
     
     private static final long seed = System.currentTimeMillis();
@@ -37,9 +30,6 @@ public class PairingHeapTest {
         heap.clear();
     }
     
-    /**
-     * Test of add and extractMinimum methods, of class PairingHeap.
-     */
     @Test
     public void testAddAndExtractMinimum() {
         final int sz = 100;
@@ -64,9 +54,6 @@ public class PairingHeapTest {
         }
     }
     
-    /**
-     * Test of decreasePriority method, of class PairingHeap.
-     */
     @Test
     public void testDecreasePriority() {
         for (int i = 10; i != 0; --i) {
@@ -84,9 +71,6 @@ public class PairingHeapTest {
         }
     }
     
-    /**
-     * Test of size method, of class PairingHeap.
-     */
     @Test
     public void testSize() {
         assertTrue(heap.isEmpty());
@@ -102,9 +86,6 @@ public class PairingHeapTest {
         assertFalse(heap.isEmpty());
     }
     
-    /**
-     * Test of isEmpty method, of class PairingHeap.
-     */
     @Test
     public void testIsEmpty() {
         assertTrue(heap.isEmpty());
@@ -135,9 +116,6 @@ public class PairingHeapTest {
         assertTrue(heap.isEmpty());
     }
     
-    /**
-     * Test of clear method, of class PairingHeap.
-     */
     @Test
     public void testClear() {
         assertTrue(heap.isEmpty());
@@ -155,9 +133,6 @@ public class PairingHeapTest {
         assertEquals(0, heap.size());
     }
     
-    /**
-     * Test of spawn method, of class PairingHeap.
-     */
     @Test
     public void testSpawn() {
         heap.add(1, 2);
@@ -195,17 +170,37 @@ public class PairingHeapTest {
         assertEquals(0, heap.size());
     }
     
-    /**
-     * Checks that the heap throws NoSuchElementException once being read while
-     * containing no elements.
-     */
     @Test(expected = NoSuchElementException.class)
-    public void testReadingEmptyThrows() {
+    public void testExtractingFromEmptyThrows() {
         heap.add(10, 10);
         heap.add(1, 29);
         
         heap.extractMinimum();
         heap.extractMinimum();
         heap.extractMinimum();
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testPeekingEmptyHeapThrows() {
+        heap.min();
+    }
+    
+    @Test
+    public void testMin() {
+        heap.add(3, 3);
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        heap.add(2, 2);
+        
+        assertEquals((Integer) 2, heap.min());
+        
+        assertEquals(2, heap.size());
+        
+        heap.decreasePriority(3, 1);
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        assertEquals(2, heap.size());
     }
 }

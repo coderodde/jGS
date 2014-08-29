@@ -1,16 +1,11 @@
 package net.coderodde.jgs.model.ds.support;
 
+import java.util.NoSuchElementException;
 import java.util.Random;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * This class tests <code>net.coderodde.jgs.model.ds.support.DaryHeap</code>.
- * 
- * @author Rodion Efremov
- * @version 1.6
- */
 public class DaryHeapTest {
     
     private static final long seed = System.currentTimeMillis();
@@ -20,9 +15,6 @@ public class DaryHeapTest {
         System.out.println("DaryHeapTest.java, seed: " + seed);
     }
     
-    /**
-     * Test of add method, of class DaryHeap.
-     */
     @Test
     public void testAdd() {
         testAddOn(new DaryHeap<Float, Float>(), seed);
@@ -31,9 +23,6 @@ public class DaryHeapTest {
         testAddOn(new DaryHeap<Float, Float>(5), seed);
     }
 
-    /**
-     * Test of decreasePriority method, of class DaryHeap.
-     */
     @Test
     public void testDecreasePriority() {
         testDecreasePriorityOn(new DaryHeap<Integer, Integer>());
@@ -42,9 +31,6 @@ public class DaryHeapTest {
         testDecreasePriorityOn(new DaryHeap<Integer, Integer>(5));
     }
 
-    /**
-     * Test of extractMinimum method, of class DaryHeap.
-     */
     @Test
     public void testExtractMinimum() {
         testExtractMinimumOn(new DaryHeap<Integer, Integer>());
@@ -53,9 +39,6 @@ public class DaryHeapTest {
         testExtractMinimumOn(new DaryHeap<Integer, Integer>(5));
     }
 
-    /**
-     * Test of size method, of class DaryHeap.
-     */
     @Test
     public void testSize() {
         testSizeOn(new DaryHeap<Integer, Integer>());
@@ -64,10 +47,6 @@ public class DaryHeapTest {
         testSizeOn(new DaryHeap<Integer, Integer>(5));
     }
     
-
-    /**
-     * Test of isEmpty method, of class DaryHeap.
-     */
     @Test
     public void testIsEmpty() {
         testIsEmptyOn(new DaryHeap<Integer, Integer>());
@@ -76,9 +55,6 @@ public class DaryHeapTest {
         testIsEmptyOn(new DaryHeap<Integer, Integer>(5));
     }
 
-    /**
-     * Test of clear method, of class DaryHeap.
-     */
     @Test
     public void testClear() {
         testClearOn(new DaryHeap<Integer, Integer>());
@@ -87,15 +63,40 @@ public class DaryHeapTest {
         testClearOn(new DaryHeap<Integer, Integer>(5));
     }
 
-    /**
-     * Test of spawn method, of class DaryHeap.
-     */
     @Test
     public void testSpawn() {
         testSpawnOn(new DaryHeap<Integer, Integer>());
         testSpawnOn(new DaryHeap<Integer, Integer>(3));
         testSpawnOn(new DaryHeap<Integer, Integer>(4));
         testSpawnOn(new DaryHeap<Integer, Integer>(5));
+    }
+    
+    @Test
+    public void testPeekOn() {
+        testPeekOn(new DaryHeap<Integer, Integer>(2));
+        testPeekOn(new DaryHeap<Integer, Integer>(3));
+        testPeekOn(new DaryHeap<Integer, Integer>(4));
+        testPeekOn(new DaryHeap<Integer, Integer>(5));
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testPeekingEmptyHeapThrows2() {
+        new DaryHeap<Integer, Integer>(2).min();
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testPeekingEmptyHeapThrows3() {
+        new DaryHeap<Integer, Integer>(3).min();
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testPeekingEmptyHeapThrows4() {
+        new DaryHeap<Integer, Integer>(4).min();
+    }
+    
+    @Test(expected = NoSuchElementException.class)
+    public void testPeekingEmptyHeapThrows5() {
+        new DaryHeap<Integer, Integer>(5).min();
     }
     
     private void testAddOn(final DaryHeap<Float, Float> heap, final long seed) {
@@ -228,5 +229,23 @@ public class DaryHeapTest {
         assertEquals(heap.getDegree(), heap2.getDegree());
         assertFalse(heap.isEmpty());
         assertTrue(heap2.isEmpty());
+    }
+    
+    private void testPeekOn(final DaryHeap<Integer, Integer> heap) {
+        heap.add(3, 3);
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        heap.add(2, 2);
+        
+        assertEquals((Integer) 2, heap.min());
+        
+        assertEquals(2, heap.size());
+        
+        heap.decreasePriority(3, 1);
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        assertEquals(2, heap.size());
     }
 }

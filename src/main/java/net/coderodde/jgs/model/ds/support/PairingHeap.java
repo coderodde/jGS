@@ -228,6 +228,16 @@ extends MinPriorityQueue<E, P> {
     }
 
     @Override
+    public E min() {
+        if (root == null) {
+            throw new NoSuchElementException(
+                    "Reading from an empty pairing heap.");
+        }
+        
+        return root.element;
+    }
+    
+    @Override
     public int size() {
         return root == null ? 0 : root.size;
     }

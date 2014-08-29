@@ -86,7 +86,7 @@ extends MinPriorityQueue<E, P> {
     private Map<E, Node<E, P>> map;
     
     /**
-     * References to the node with minimum priority.
+     * References the node with minimum priority.
      */
     private Node<E, P> minimumNode;
     
@@ -222,6 +222,16 @@ extends MinPriorityQueue<E, P> {
 
         map.remove(z.element);
         return z.element;
+    }
+    
+    @Override
+    public E min() {
+        if (size == 0) {
+            throw new NoSuchElementException(
+                    "Reading from an empty Fibonacci heap.");
+        }
+        
+        return minimumNode.element;
     }
     
     /**

@@ -47,6 +47,14 @@ extends PathFinder<T, W> {
     
     @Override
     public Path<T> search(T source, T target) {
+        checkNotNull(source, "The source node is null.");
+        checkNotNull(target, "The target node is null.");
+        checkNotNull(source.getOwnerGraph(), 
+                     "The source node belongs to no graph.");
+        
+        checkNotNull(target.getOwnerGraph(),
+                     "The target node belongs to no graph.");
+        
         openSet.clear();
         closedSet.clear();
         parentMap.clear();

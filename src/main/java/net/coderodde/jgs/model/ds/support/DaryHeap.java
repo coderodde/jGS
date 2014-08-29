@@ -179,6 +179,15 @@ extends MinPriorityQueue<E, P> {
         
         return ret;
     }
+    
+    @Override
+    public E min() {
+        if (size == 0) {
+            throw new NoSuchElementException("Reading from an empty queue.");
+        }
+        
+        return ((Node<E, P>) storage[0]).element;
+    }
 
     @Override
     public int size() {

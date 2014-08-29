@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import net.coderodde.jgs.Utilities;
+import static net.coderodde.jgs.Utilities.checkNodesBelongToSameGraph;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 import net.coderodde.jgs.model.AbstractHeuristicFunction;
 import net.coderodde.jgs.model.AbstractNode;
@@ -53,6 +55,16 @@ extends PathFinder<T, W> {
     
     @Override
     public Path<T> search(final T source, final T target) {
+        checkNotNull(source, "The source node is null.");
+        checkNotNull(target, "The target node is null.");
+        checkNotNull(source.getOwnerGraph(), 
+                     "The source node belongs to no graph.");
+        
+        checkNotNull(target.getOwnerGraph(),
+                     "The target node belongs to no graph.");
+        
+        checkNodesBelongToSameGraph(source, target);
+        
         openSet.clear();
         closedSet.clear();
         parentMap.clear();

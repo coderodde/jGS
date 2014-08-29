@@ -82,6 +82,11 @@ extends MinPriorityQueue<E, P> {
     private BinomialTree<E, P> head;
     
     /**
+     * Caches the binomial tree with the least priority key.
+     */
+    private BinomialTree<E, P> minimumTree;
+    
+    /**
      * Maps each element in the heap to its respective node.
      */
     private final Map<E, BinomialTree<E, P>> map;
@@ -114,6 +119,7 @@ extends MinPriorityQueue<E, P> {
     private BinomialHeap(final E element, final P priority) {
         BinomialTree<E, P> tree = new BinomialTree<>(element, priority);
         head = tree;
+        minimumTree = tree;
         size = 1;
         map = null;
     }
@@ -132,12 +138,17 @@ extends MinPriorityQueue<E, P> {
         
         if (size == 0) {
             this.head = h.head;
+            this.minimumTree = h.head;
             this.map.put(element, this.head);
             this.size = 1;
         } else {
             heapUnion(h.head);
             this.map.put(element, h.head);
             this.size++;
+            
+            if (h.minimumTree.priority.compareTo(minimumTree.priority) < 0) {
+                minimumTree = h.minimumTree;
+            }
         }
     }
 
@@ -228,6 +239,15 @@ extends MinPriorityQueue<E, P> {
         return best.element;
     }
 
+    @Override
+    public E min() {
+        if (size == 0) {
+            throw new NoSuchElementException("Reading from an empty heap.");
+        }
+        
+        return minimumTree.element;
+    }
+    
     /**
      * {@inheritDoc}
      * 
