@@ -13,4 +13,9 @@ public class DoubleWeight extends Weight<Double> {
     public Double append(final Double a, final Double b) {
         return a + b;
     }
+
+    @Override
+    public Double largest() {
+        return Double.POSITIVE_INFINITY;
+    }
 }

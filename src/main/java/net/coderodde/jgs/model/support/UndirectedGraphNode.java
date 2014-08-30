@@ -59,6 +59,11 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
      */
     @Override
     public void connectTo(UndirectedGraphNode child) {
+        if (child == this) {
+            // Do not allow self-loops.
+            return;
+        }
+        
         checkNotNull(getOwnerGraph(), 
                      "The parent node does not belong to any graph.");
         checkNotNull(child, "The child node is null.");

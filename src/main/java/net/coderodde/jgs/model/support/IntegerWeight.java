@@ -13,4 +13,9 @@ public class IntegerWeight extends Weight<Integer> {
     public Integer append(Integer a, Integer b) {
         return a + b;
     }
+
+    @Override
+    public Integer largest() {
+        return Integer.MAX_VALUE;
+    }
 }

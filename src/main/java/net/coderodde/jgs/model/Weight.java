@@ -26,6 +26,8 @@ public abstract class Weight<T> {
      */
     public abstract T append(final T a, final T b);
     
+    public abstract T largest();
+    
     public T read(final Object what) {
         return (T) what;
     }
