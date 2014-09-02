@@ -196,9 +196,7 @@ extends MinPriorityQueue<E, P> {
             z = z.parent;
         }
         
-        if (z == null) {
-            minimumTree = y;
-        } else {
+        if (minimumTree.priority.compareTo(y.priority) > 0) {
             minimumTree = y;
         }
     }
@@ -252,7 +250,8 @@ extends MinPriorityQueue<E, P> {
             P minPriority = head.priority;
             
             while (t != null) {
-                if (t.priority.compareTo(minPriority) < 0) {
+                if (minPriority.compareTo(t.priority) > 0) {
+                    minPriority = t.priority;
                     minTree = t;
                 }
                 

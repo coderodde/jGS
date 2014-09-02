@@ -158,8 +158,6 @@ extends PathFinder<T, W> {
             final W mtmp = weight.append(distanceMap1.get(openSet1.min()),
                                          distanceMap2.get(openSet2.min()));
             
-            System.out.println(mtmp);
-            
             if (mtmp.compareTo(m) >= 0) {
                 return constructPath(touch, parentMap1, parentMap2);
             }
