@@ -155,17 +155,16 @@ extends PathFinder<T, W> {
         W m = weight.largest();
         
         while (!openSet1.isEmpty() && !openSet2.isEmpty()) {
+            final W mtmp = weight.append(distanceMap1.get(openSet1.min()),
+                                         distanceMap2.get(openSet2.min()));
             
-            if (touch != null) {
-                W tmp = weight.append(distanceMap1.get(openSet1.min()),
-                                      distanceMap2.get(openSet2.min()));
-                
-                if (tmp.compareTo(m) > 0) {
-                    return constructPath(touch, parentMap1, parentMap2);
-                }
+            System.out.println(mtmp);
+            
+            if (mtmp.compareTo(m) >= 0) {
+                return constructPath(touch, parentMap1, parentMap2);
             }
             
-//            if (openSet1.size() < openSet2.size()) {
+            if (openSet1.size() < openSet2.size()) {
                 // Expand the forward frontier.
                 T current = openSet1.extractMinimum();
                 
@@ -213,9 +212,9 @@ extends PathFinder<T, W> {
                         }
                     }
                 }
-//            } else {
+            } else {
                 // Expand the backward frontier.
-                current = openSet2.extractMinimum();
+                final T current = openSet2.extractMinimum();
                 
                 closedSet2.add(current);
                 
@@ -262,7 +261,7 @@ extends PathFinder<T, W> {
                         }
                     }
                 }
-//            }
+            }
         }
         
         return emptyPath;

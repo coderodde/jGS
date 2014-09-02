@@ -72,4 +72,11 @@ public abstract class MinPriorityQueue<E, P extends Comparable<? super P>> {
      * @return another empty heap.
      */
     public abstract MinPriorityQueue<E, P> spawn();
+    
+    /**
+     * Returns a string indicating the actual implementation type.
+     * 
+     * @return a string indicating implementation type.
+     */
+    public abstract String toString();
 }

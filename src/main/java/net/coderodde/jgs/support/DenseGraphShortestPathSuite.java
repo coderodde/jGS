@@ -40,7 +40,7 @@ public class DenseGraphShortestPathSuite implements DemoSuite {
     private Path<DirectedGraphNode> path;
     
     public DenseGraphShortestPathSuite() {
-        this.seed = System.currentTimeMillis();
+        this.seed = 1409665925756L; //System.currentTimeMillis();
         title1("DenseGraphShortestPathSuite.java, seed: " + seed);
         final Triple<Graph<DirectedGraphNode>,
                      DirectedGraphDoubleWeightFunction,

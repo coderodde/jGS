@@ -95,6 +95,9 @@ extends MinPriorityQueue<E, P> {
      */
     private int size;
 
+    /**
+     * The cached array for consolidation routine.
+     */
     private Node<E, P>[] array;
 
     /**
@@ -117,6 +120,9 @@ extends MinPriorityQueue<E, P> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @param element the element to insert.
+     * @param priority the priority key of the element.
      */
     @Override
     public void add(final E element, final P priority) {
@@ -146,6 +152,9 @@ extends MinPriorityQueue<E, P> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @param element the element whose priority key to decrease.
+     * @param newPriority the new priority of the element.
      */
     @Override
     public void decreasePriority(final E element, final P newPriority) {
@@ -176,6 +185,8 @@ extends MinPriorityQueue<E, P> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
      */
     @Override
     public E extractMinimum() {
@@ -224,6 +235,11 @@ extends MinPriorityQueue<E, P> {
         return z.element;
     }
     
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
+     */
     @Override
     public E min() {
         if (size == 0) {
@@ -236,6 +252,8 @@ extends MinPriorityQueue<E, P> {
     
     /**
      * {@inheritDoc}
+     * 
+     * @return the amount of elements in this binomial heap.
      */
     @Override
     public int size() {
@@ -244,6 +262,9 @@ extends MinPriorityQueue<E, P> {
 
     /**
      * {@inheritDoc}
+     * 
+     * @return <code>true</code> if this heap is empty; <code>false</code> 
+     * otherwise.
      */
     @Override
     public boolean isEmpty() {
@@ -268,6 +289,16 @@ extends MinPriorityQueue<E, P> {
     @Override
     public MinPriorityQueue<E, P> spawn() {
         return new FibonacciHeap<>();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the string indicating the implementation type.
+     */
+    @Override
+    public String toString() {
+        return "FibonacciHeap";
     }
     
     private void consolidate() {

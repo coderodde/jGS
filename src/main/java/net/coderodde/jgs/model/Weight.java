@@ -26,9 +26,21 @@ public abstract class Weight<T> {
      */
     public abstract T append(final T a, final T b);
     
+    /**
+     * Returns the largest value possible for <code>T</code>.
+     * 
+     * @return the largest value.
+     */
     public abstract T largest();
     
-    public T read(final Object what) {
+    /**
+     * This is a dirty hack.
+     * 
+     * @param what the object to convert.
+     * 
+     * @return the input value.
+     */
+    public T convert(final Object what) {
         return (T) what;
     }
 }

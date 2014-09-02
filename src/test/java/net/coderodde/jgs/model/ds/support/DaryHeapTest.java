@@ -99,6 +99,14 @@ public class DaryHeapTest {
         new DaryHeap<Integer, Integer>(5).min();
     }
     
+    @Test
+    public void testMin() {
+        testMinOn(new DaryHeap<Integer, Integer>(2));
+        testMinOn(new DaryHeap<Integer, Integer>(3));
+        testMinOn(new DaryHeap<Integer, Integer>(4));
+        testMinOn(new DaryHeap<Integer, Integer>(5));
+    }
+    
     private void testAddOn(final DaryHeap<Float, Float> heap, final long seed) {
         final int sz = 100000;
         final Random rnd = new Random(seed);
@@ -247,5 +255,40 @@ public class DaryHeapTest {
         assertEquals((Integer) 3, heap.min());
         
         assertEquals(2, heap.size());
+    }
+    
+    private void testMinOn(final DaryHeap<Integer, Integer> heap) {
+        heap.add(3, 3); // (3, 3)
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        heap.add(2, 2); // (2, 2) (3, 3)
+        
+        assertEquals((Integer) 2, heap.min());
+        
+        assertEquals(2, heap.size());
+        
+        heap.decreasePriority(3, 1); // (3, 1) (2, 2)
+        
+        assertEquals((Integer) 3, heap.min());
+        
+        assertEquals(2, heap.size());
+        
+        assertEquals((Integer) 3, heap.extractMinimum()); // (2, 2)
+
+        assertEquals(1, heap.size());
+        
+        assertEquals((Integer) 2, heap.min());
+        
+        assertEquals((Integer) 2, heap.extractMinimum());
+        
+        assertEquals(0, heap.size());
+        
+        try {
+            heap.min();
+            fail("BinomialHeap did not throw on being read while empty.");
+        } catch (final NoSuchElementException nsee) {
+            
+        }
     }
 }

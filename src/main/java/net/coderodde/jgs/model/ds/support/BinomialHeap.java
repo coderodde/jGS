@@ -126,6 +126,9 @@ extends MinPriorityQueue<E, P> {
     
     /**
      * {@inheritDoc}
+     * 
+     * @param element the element to add.
+     * @param priority the priority key of the element.
      */
     @Override
     public void add(E element, P priority) {
@@ -146,7 +149,7 @@ extends MinPriorityQueue<E, P> {
             this.map.put(element, h.head);
             this.size++;
             
-            if (h.minimumTree.priority.compareTo(minimumTree.priority) < 0) {
+            if (minimumTree.priority.compareTo(h.minimumTree.priority) > 0) {
                 minimumTree = h.minimumTree;
             }
         }
@@ -192,6 +195,12 @@ extends MinPriorityQueue<E, P> {
             y = z;
             z = z.parent;
         }
+        
+        if (z == null) {
+            minimumTree = y;
+        } else {
+            minimumTree = y;
+        }
     }
 
     /**
@@ -235,10 +244,32 @@ extends MinPriorityQueue<E, P> {
         // Unite this heap with the reversed list of children of the tree whose
         // root contained the extracted element.
         heapUnion(reverseRootList(best.child));
-        --size;
+        
+        // Update the cached minimum tree.
+        if (--size > 0) {
+            BinomialTree<E, P> minTree = head;
+            BinomialTree<E, P> t = head.sibling;
+            P minPriority = head.priority;
+            
+            while (t != null) {
+                if (t.priority.compareTo(minPriority) < 0) {
+                    minTree = t;
+                }
+                
+                t = t.sibling;
+            }
+            
+            minimumTree = minTree;
+        }
+        
         return best.element;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return returns but does not remove the minimum element. 
+     */
     @Override
     public E min() {
         if (size == 0) {
@@ -289,6 +320,16 @@ extends MinPriorityQueue<E, P> {
        return new BinomialHeap<>();
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the string indicating the implementation type.
+     */
+    @Override
+    public String toString() {
+        return "BinomialHeap";
+    }
+    
     /**
      * Makes <code>y</code> a leftmost child of <code>z</code>.
      * 

@@ -145,6 +145,12 @@ extends MinPriorityQueue<E, P> {
         ++size;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param element the element whose priority key to decrease.
+     * @param newPriority the new priority of the element.
+     */
     @Override
     public void decreasePriority(E element, P newPriority) {
         Node<E, P> node = map.get(element);
@@ -159,6 +165,11 @@ extends MinPriorityQueue<E, P> {
         siftUp(node.index);
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key. 
+     */
     @Override
     public E extractMinimum() {
         if (size == 0) {
@@ -180,6 +191,11 @@ extends MinPriorityQueue<E, P> {
         return ret;
     }
     
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
+     */
     @Override
     public E min() {
         if (size == 0) {
@@ -189,16 +205,30 @@ extends MinPriorityQueue<E, P> {
         return ((Node<E, P>) storage[0]).element;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the amount of elements in this heap.
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return <code>true</code> if this heap is empty; 
+     * <code>false</code> otherwise.
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         // Nullify the storage array, so that the garbage collector can collect.
@@ -210,6 +240,11 @@ extends MinPriorityQueue<E, P> {
         size = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return an empty binomial heap.
+     */
     @Override
     public MinPriorityQueue<E, P> spawn() {
         return new DaryHeap<>(this.degree);
@@ -222,6 +257,16 @@ extends MinPriorityQueue<E, P> {
      */
     public int getDegree() {
         return degree;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the string indicating the implementation type.
+     */
+    @Override
+    public String toString() {
+        return "DaryHeap with degree " + degree;
     }
     
     /**

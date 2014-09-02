@@ -198,6 +198,11 @@ extends MinPriorityQueue<E, P> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
+     */
     @Override
     public E extractMinimum() {
         if (root == null) {
@@ -227,6 +232,11 @@ extends MinPriorityQueue<E, P> {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the element with the least priority key.
+     */
     @Override
     public E min() {
         if (root == null) {
@@ -237,25 +247,54 @@ extends MinPriorityQueue<E, P> {
         return root.element;
     }
     
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the amount of elements in this heap.
+     */
     @Override
     public int size() {
         return root == null ? 0 : root.size;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return <code>true</code> if this heap is empty; <code>false</code>
+     * otherwise.
+     */
     @Override
     public boolean isEmpty() {
         return root == null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         map.clear();
         root = null;
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return an empty pairing heap. 
+     */
     @Override
     public MinPriorityQueue<E, P> spawn() {
         return new PairingHeap<>();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @return the string indicating the implementation type.
+     */
+    @Override
+    public String toString() {
+        return "PairingHeap";
     }
     
     /**

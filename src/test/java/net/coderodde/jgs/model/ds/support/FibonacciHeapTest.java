@@ -184,23 +184,40 @@ public class FibonacciHeapTest {
     public void testPeekingEmptyHeapThrows() {
         heap.min();
     }
-    
+   
     @Test
     public void testMin() {
-        heap.add(3, 3);
+        heap.add(3, 3); // (3, 3)
         
         assertEquals((Integer) 3, heap.min());
         
-        heap.add(2, 2);
+        heap.add(2, 2); // (2, 2) (3, 3)
         
         assertEquals((Integer) 2, heap.min());
         
         assertEquals(2, heap.size());
         
-        heap.decreasePriority(3, 1);
+        heap.decreasePriority(3, 1); // (3, 1) (2, 2)
         
         assertEquals((Integer) 3, heap.min());
         
         assertEquals(2, heap.size());
+        
+        assertEquals((Integer) 3, heap.extractMinimum()); // (2, 2)
+
+        assertEquals(1, heap.size());
+        
+        assertEquals((Integer) 2, heap.min());
+        
+        assertEquals((Integer) 2, heap.extractMinimum());
+        
+        assertEquals(0, heap.size());
+        
+        try {
+            heap.min();
+            fail("BinomialHeap did not throw on being read while empty.");
+        } catch (final NoSuchElementException nsee) {
+            
+        }
     }
 }

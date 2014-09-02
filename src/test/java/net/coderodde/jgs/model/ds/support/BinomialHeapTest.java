@@ -212,5 +212,12 @@ public class BinomialHeapTest {
         assertEquals((Integer) 2, heap.extractMinimum());
         
         assertEquals(0, heap.size());
+        
+        try {
+            heap.min();
+            fail("BinomialHeap did not throw on being read while empty.");
+        } catch (final NoSuchElementException nsee) {
+            
+        }
     }
 }
