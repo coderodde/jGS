@@ -41,9 +41,7 @@ public class Utilities {
     /**
      * Hide the constructors.
      */
-    private Utilities() {
-        
-    }
+    private Utilities() {}
     
     /**
      * Throws an <code>NullPointerException</code> with message
@@ -202,11 +200,25 @@ public class Utilities {
         }
     }
     
+    /**
+     * Defines a triple.
+     * 
+     * @param <F> the type of the first component.
+     * @param <S> the type of the second component.
+     * @param <T> the type of the third component.
+     */
     public static final class Triple<F, S, T> {
         public F first;
         public S second;
         public T third;
         
+        /**
+         * Constructs a triple.
+         * 
+         * @param first the first component.
+         * @param second the second component.
+         * @param third the third component.
+         */
         public Triple(final F first, final S second, final T third) {
             this.first = first;
             this.second = second;
@@ -214,13 +226,30 @@ public class Utilities {
         }
     }
     
+    /**
+     * Creates a directed graph, its weight function and the coordinate map to 
+     * be passed to the heuristic function.
+     * 
+     * @param size the amount of nodes in the graph.
+     * @param edges the amount of edges in the graph.
+     * @param width the width of the bounding box.
+     * @param height the height of the bounding box.
+     * @param edgeFactor the factor by which the actual distance between two 
+     * end nodes will be multiplied as to make the heuristic function
+     * <tt>optimistic</tt>; must be above 1.0.
+     * @param graphName the graph name.
+     * @param rnd the random number generator.
+     * 
+     * @return a triple containing the graph, weight function and the map
+     * mapping the nodes to their respective coordinates.
+     */
     public static final Triple<Graph<DirectedGraphNode>, 
                                DirectedGraphDoubleWeightFunction,
                                GraphNodeCoordinates>
             createRandomDirectedGraphWithCoordinates(final int size,
                                                      final int edges,
-                                                     final double maxx,
-                                                     final double maxy,
+                                                     final double width,
+                                                     final double height,
                                                      final double edgeFactor,
                                                      final String graphName,
                                                      final Random rnd) {
@@ -235,8 +264,8 @@ public class Utilities {
             graph.addNode(node);
             list.add(node);
             
-            final double x = maxx * rnd.nextDouble();
-            final double y = maxy * rnd.nextDouble();
+            final double x = width * rnd.nextDouble();
+            final double y = height * rnd.nextDouble();
             
             coords.put(node, new Point.Double(x, y));
         }
@@ -259,37 +288,6 @@ public class Utilities {
         }
          
         return new Triple<>(graph, f, coords);
-    }
-    
-    public static final Graph<DirectedGraphNode> 
-            createRandomDirectedGraph(final int size,
-                                      int edges,
-                                      final String name,
-                                      final Random rnd) {
-        checkNotNull(name, "The graph name is null.");
-        checkNotNull(rnd, "The random number generator is null.");
-        
-        final Graph<DirectedGraphNode> graph = new Graph<>(name);
-        final List<DirectedGraphNode> nodeList = new ArrayList<>(size);
-        
-        for (int i = 0; i < size; ++i) {
-            final DirectedGraphNode node = new DirectedGraphNode("" + i);
-            graph.addNode(node);
-            nodeList.add(node);
-        }
-        
-        if (edges > (int)(0.8 * size * size)) {
-            edges = (int)(0.8 * size * size);
-        }
-        
-        while (edges > 0) {
-            final DirectedGraphNode tail = nodeList.get(rnd.nextInt(size));
-            final DirectedGraphNode head = nodeList.get(rnd.nextInt(size));
-            tail.connectTo(head);
-            edges--;
-        }
-        
-        return graph;
     }
     
     /**
