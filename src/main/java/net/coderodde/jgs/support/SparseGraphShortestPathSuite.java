@@ -184,7 +184,7 @@ public class SparseGraphShortestPathSuite implements DemoSuite {
     
     private void profileAStarAlgorithmOn(
             final MinPriorityQueue<DirectedGraphNode, Double> queue) {
-         if (queue instanceof DaryHeap) {
+        if (queue instanceof DaryHeap) {
             System.out.print(queue.getClass().getSimpleName() + ", degree " +
                              ((DaryHeap) queue).getDegree() + ": ");
         } else {
@@ -216,5 +216,33 @@ public class SparseGraphShortestPathSuite implements DemoSuite {
     
     private void profileBidirectionalAStarAlgorithmOn(
             final MinPriorityQueue<DirectedGraphNode, Double> queue) {
+        if (queue instanceof DaryHeap) {
+            System.out.print(queue.getClass().getSimpleName() + ", degree " +
+                             ((DaryHeap) queue).getDegree() + ": ");
+        } else {
+            System.out.print(queue.getClass().getSimpleName() + ": ");
+        }
+        
+        long ta = System.currentTimeMillis();
+        
+        PathFinder<DirectedGraphNode, Double> pf = 
+                new AStarPathFinder<>(f, 
+                                      hf, 
+                                      new DoubleWeight(), 
+                                      queue.spawn());
+        
+        final Path<DirectedGraphNode> p = pf.search(source, target);
+        
+        long tb = System.currentTimeMillis();
+        
+        System.out.println("" + (tb - ta) + " ms.");
+        
+        if (path == null) {
+            path = p;
+        } else if (!path.equals(p)) {
+            System.out.println("Algorithms disagreed. Latest: " + 
+                               f.getPathWeight(path) +
+                               ", current: " + f.getPathWeight(p));
+        }
     }
 }

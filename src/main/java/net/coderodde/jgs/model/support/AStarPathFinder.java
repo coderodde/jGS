@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.coderodde.jgs.Utilities;
 import static net.coderodde.jgs.Utilities.checkNodesBelongToSameGraph;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 import net.coderodde.jgs.model.AbstractHeuristicFunction;
