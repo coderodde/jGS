@@ -1,7 +1,9 @@
 package net.coderodde.jgs.model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import static net.coderodde.jgs.Utilities.checkNotNull;
 
 /**
@@ -14,16 +16,17 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
  * <code>net.coderodde.jgs.model.Node</code>.
  */
 public class Graph<T extends AbstractNode<T>> {
-
-    /**
-     * The name of this graph.
-     */
-    private final String name;
     
     /**
-     * The map mapping node names to nodes.
+     * The list of nodes for constant time access by an index.
      */
-    private final Map<String, T> map;
+    private final List<T> nodeList;
+    
+    /**
+     * The set of nodes for constant time inclusion query. At any given moment,
+     * has the same nodes as the <code>nodeList</code>.
+     */
+    private final Set<T> nodeSet;
     
     /**
      * The cached amount of edges in this graph.
@@ -31,14 +34,11 @@ public class Graph<T extends AbstractNode<T>> {
     int edgeAmount;
     
     /**
-     * Constructs an empty graph with name <code>name</code>.
-     * 
-     * @param name the name of the new graph.
+     * Constructs an empty graph.
      */
-    public Graph(final String name) {
-        checkNotNull(name, "The graph must have a name. Null received.");
-        this.name = name;
-        this.map = new LinkedHashMap<>();
+    public Graph() {
+        this.nodeList = new ArrayList<>();
+        this.nodeSet = new HashSet<>();
     }
     
     /**
@@ -53,7 +53,7 @@ public class Graph<T extends AbstractNode<T>> {
     public boolean addNode(final T node) {
         checkNotNull(node, "Node is null.");
         
-        if (map.containsKey(node.getName())) {
+        if (nodeSet.contains(node)) {
             return false;
         }
         
@@ -63,26 +63,50 @@ public class Graph<T extends AbstractNode<T>> {
             oldOwnerGraph.removeNode(node);
         }
         
-        map.put(node.getName(), node);
+        nodeList.add(node);
+        nodeSet.add(node);
         node.setOwnerGraph(this);
         return true;
     }
     
-    public T getByName(final String name) {
-        return map.get(name);
+    /**
+     * Returns the <tt>index</tt>th node in this graph.
+     * @param index
+     * @return 
+     */
+    public T get(final int index) {
+        return nodeList.get(index);
     }
     
     /**
-     * Removes a node from this graph if it is contained by the graph.
+     * Returns <code>true</code> if <code>node</code> is in this graph;
+     * <code>false</code> otherwise.
+     * 
+     * @param node the node to query.
+     * @return <code>true</code> or <code>false</code> as above.
+     */
+    public boolean containsNode(final T node) {
+        return nodeSet.contains(node);
+    }
+    
+    /**
+     * Removes a node from this graph if it is contained by this graph.
      * 
      * @param node the node to remove.
+     * 
+     * @return <code>true</code> if actual node removal took place, 
+     * <code>false</code> otherwise.
      */
-    public void removeNode(final T node) {
+    public boolean removeNode(final T node) {
         checkNotNull(node, "Node is null.");
         
         if (node.getOwnerGraph() == this) {
             node.clear();
-            map.remove(node.getName());
+            nodeList.remove(node);
+            nodeSet.remove(node);
+            return true;
+        } else {
+            return false;
         }
     }
     
@@ -90,21 +114,13 @@ public class Graph<T extends AbstractNode<T>> {
      * Resets this graph to an empty graph with no edges and no nodes.
      */
     public void clear() {
-        // We have to copy the map values (nodes) into an array because 
-        // otherwise we would have to modify it (via remove()) which would
-        // throw ConcurrentModificationException.
-        AbstractNode[] nodeArray = new AbstractNode[map.size()];
-        int index = 0;
-        
-        // Copy.
-        for (final T node : map.values()) {
-            nodeArray[index++] = node;
+        for (final T node : nodeList) {
+            node.clear();
         }
         
-        // Remove.
-        for (final AbstractNode node : nodeArray) {
-            removeNode((T) node);
-        }
+        nodeList.clear();
+        nodeSet.clear();
+        edgeAmount = 0;
     }
     
     /**
@@ -113,7 +129,7 @@ public class Graph<T extends AbstractNode<T>> {
      * @return the amount of nodes in this graph. 
      */
     public int size() {
-        return map.size();
+        return nodeList.size();
     }
     
     /**

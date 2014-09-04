@@ -21,12 +21,12 @@ public class DirectedGraphNodeTest {
     private final Graph<DirectedGraphNode> G2;
     
     public DirectedGraphNodeTest() {
-        a = new DirectedGraphNode("A");
-        b = new DirectedGraphNode("B");
-        c = new DirectedGraphNode("C");
+        a = new DirectedGraphNode();
+        b = new DirectedGraphNode();
+        c = new DirectedGraphNode();
         
-        G1 = new Graph<>("G1");
-        G2 = new Graph<>("G2");
+        G1 = new Graph<>();
+        G2 = new Graph<>();
     }
     
     @Before
@@ -291,21 +291,11 @@ public class DirectedGraphNodeTest {
 
     @Test
     public void testToString() {
-        assertEquals(a.toString(), "[DirectedGraphNode A]");
-        assertEquals(b.toString(), "[DirectedGraphNode B]");
-        assertEquals(c.toString(), "[DirectedGraphNode C]");
-        
-        assertEquals(new DirectedGraphNode("Funkeeh!").toString(),
-                     "[DirectedGraphNode Funkeeh!]");
-    }
-    
-    /**
-     * Tests that constructing an DirectedGraphNode with null name throws
-     * NullPointerException.
-     */
-    @Test(expected = NullPointerException.class)
-    public void nullNameThrows() {
-        new DirectedGraphNode(null);
+        assertTrue(a.toString().startsWith("[DirectedGraphNode "));
+        assertTrue(b.toString().startsWith("[DirectedGraphNode "));
+        assertTrue(c.toString().startsWith("[DirectedGraphNode "));
+        assertTrue(new DirectedGraphNode()
+                   .toString().startsWith("[DirectedGraphNode "));
     }
     
     /**
@@ -333,7 +323,7 @@ public class DirectedGraphNodeTest {
     @Test(expected = NullPointerException.class) 
     public void connectingToNonNullNodeHavingNoOwnerGraphThrows() {
         G1.addNode(a);
-        a.connectTo(new DirectedGraphNode("tmp"));
+        a.connectTo(new DirectedGraphNode());
     }
     
     /**

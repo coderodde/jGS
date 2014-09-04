@@ -19,11 +19,11 @@ public class UndirectedGraphDoubleWeightFunctionTest {
     private final UndirectedGraphNode c;
     
     public UndirectedGraphDoubleWeightFunctionTest() {
-        graph = new Graph<>("My graph");
+        graph = new Graph<>();
         f     = new UndirectedGraphDoubleWeightFunction();
-        a     = new UndirectedGraphNode("A");
-        b     = new UndirectedGraphNode("B");
-        c     = new UndirectedGraphNode("C");
+        a     = new UndirectedGraphNode();
+        b     = new UndirectedGraphNode();
+        c     = new UndirectedGraphNode();
     }
     
     @Before

@@ -19,11 +19,11 @@ public class DirectedGraphDoubleWeightFunctionTest {
     private final DirectedGraphNode c;
     
     public DirectedGraphDoubleWeightFunctionTest() {
-        graph = new Graph<>("My graph");
+        graph = new Graph<>();
         f     = new DirectedGraphDoubleWeightFunction();
-        a     = new DirectedGraphNode("A");
-        b     = new DirectedGraphNode("B");
-        c     = new DirectedGraphNode("C");
+        a     = new DirectedGraphNode();
+        b     = new DirectedGraphNode();
+        c     = new DirectedGraphNode();
     }
     
     @Before

@@ -17,11 +17,11 @@ public class DirectedGraphIntegerWeightFunctionTest {
     private final DirectedGraphNode c;
     
     public DirectedGraphIntegerWeightFunctionTest() {
-        graph = new Graph<>("My graph");
+        graph = new Graph<>();
         f     = new DirectedGraphIntegerWeightFunction();
-        a     = new DirectedGraphNode("A");
-        b     = new DirectedGraphNode("B");
-        c     = new DirectedGraphNode("C");
+        a     = new DirectedGraphNode();
+        b     = new DirectedGraphNode();
+        c     = new DirectedGraphNode();
     }
     
     @Before

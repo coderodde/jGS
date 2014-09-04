@@ -25,19 +25,19 @@ public class GraphTest {
     private final Graph<DirectedGraphNode> gg2;
     
     public GraphTest() {
-        this.a = new UndirectedGraphNode("A");
-        this.b = new UndirectedGraphNode("B");
-        this.c = new UndirectedGraphNode("C");
+        this.a = new UndirectedGraphNode();
+        this.b = new UndirectedGraphNode();
+        this.c = new UndirectedGraphNode();
         
-        this.g1 = new Graph<>("G1");
-        this.g2 = new Graph<>("G2");
+        this.g1 = new Graph<>();
+        this.g2 = new Graph<>();
         
-        this.aa = new DirectedGraphNode("AA");
-        this.bb = new DirectedGraphNode("BB");
-        this.cc = new DirectedGraphNode("CC");
+        this.aa = new DirectedGraphNode();
+        this.bb = new DirectedGraphNode();
+        this.cc = new DirectedGraphNode();
         
-        this.gg1 = new Graph<>("GG1");
-        this.gg2 = new Graph<>("GG2");
+        this.gg1 = new Graph<>();
+        this.gg2 = new Graph<>();
     }
     
     @Before
@@ -572,18 +572,26 @@ public class GraphTest {
         assertEquals(0, gg1.edgeCount());
     }
     
-    @Test(expected = NullPointerException.class) 
-    public void graphThrowsNullExceptionOnNullName() {
-        new Graph<DirectedGraphNode>(null);
+    @Test
+    public void testAddingNode() {
+        assertTrue(new Graph<DirectedGraphNode>()
+                   .addNode(new DirectedGraphNode()));
+    }
+    
+    public void testRemovingNodesg() {
+        assertTrue(g1.addNode(a));
+        assertFalse(g1.addNode(a));
+        assertTrue(g1.removeNode(a));
+        assertFalse(g1.removeNode(a));
     }
     
     @Test(expected = NullPointerException.class)
     public void graphThrowsNullExceptionOnAddingNullNode() {
-        new Graph<UndirectedGraphNode>("graph").addNode(null);
+        new Graph<UndirectedGraphNode>().addNode(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void graphThrowsNullExceptionOnRemovingNullNode() {
-        new Graph<UndirectedGraphNode>("graph").removeNode(null);
+        new Graph<UndirectedGraphNode>().removeNode(null);
     }
 }

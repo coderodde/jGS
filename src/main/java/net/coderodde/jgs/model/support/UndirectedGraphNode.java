@@ -26,12 +26,9 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
     private final Set<UndirectedGraphNode> neighbors;
     
     /**
-     * Constructs a new undirected graph node with a given name.
-     * 
-     * @param name the name for the new node.
+     * Constructs a new undirected graph node.
      */
-    public UndirectedGraphNode(final String name) {
-        super(name);
+    public UndirectedGraphNode() {
         this.neighbors = new LinkedHashSet<>();
     }
     
@@ -77,9 +74,7 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
                 // session should be able to break the "edge invariant"
                 // mentioned in the javadoc of this class.
                 throw new IllegalStateException(
-                "Broken edge: node \"" + child.getName() + "\" has " +
-                "\"" + this.getName() + "\" in its adjacency list, but not " +
-                "otherwise.");
+                        "A node coupling error detected.");
             }
             
             neighbors.add(child);
@@ -88,9 +83,7 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
         } else if (!child.neighbors.contains(this)) {
             // See NOTE1 and note the symmetry.
             throw new IllegalStateException(
-            "Broken edge: node \"" + this.getName() + "\" has " + 
-            "\"" + child.getName() + "\" in its adjacency list, but not " +
-            "otherwise.");
+                        "A node coupling error detected.");
         }
     }
 
@@ -176,34 +169,7 @@ public class UndirectedGraphNode extends AbstractNode<UndirectedGraphNode> {
      */
     @Override
     public final String toString() {
-        return "[UndirectedGraphNode " + name + "]";
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @param o the object to compare against.
-     * 
-     * @return <code>true</code> if the two objects are considered "same";
-     * <code>false</code> otherwise.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof UndirectedGraphNode)) {
-            return false;
-        }
-        
-        return getName().equals(((UndirectedGraphNode) o).getName());
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @return the hash code of this node.
-     */
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
+        return "[UndirectedGraphNode " + hashCode() + "]";
     }
     
     /**

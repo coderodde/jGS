@@ -21,12 +21,12 @@ public class UndirectedGraphNodeTest {
     private final Graph<UndirectedGraphNode> G2;
     
     public UndirectedGraphNodeTest() {
-        a = new UndirectedGraphNode("A");
-        b = new UndirectedGraphNode("B");
-        c = new UndirectedGraphNode("C");
+        a = new UndirectedGraphNode();
+        b = new UndirectedGraphNode();
+        c = new UndirectedGraphNode();
         
-        G1 = new Graph<>("G1");
-        G2 = new Graph<>("G2");
+        G1 = new Graph<>();
+        G2 = new Graph<>();
     }
     
     @Before
@@ -266,21 +266,11 @@ public class UndirectedGraphNodeTest {
     
     @Test
     public void testToString() {
-        assertEquals(a.toString(), "[UndirectedGraphNode A]");
-        assertEquals(b.toString(), "[UndirectedGraphNode B]");
-        assertEquals(c.toString(), "[UndirectedGraphNode C]");
-        
-        assertEquals(new UndirectedGraphNode("Funkeeh!").toString(),
-                     "[UndirectedGraphNode Funkeeh!]");
-    }
-    
-    /**
-     * Tests that constructing an UndirectedGraphNode with null name throws
-     * NullPointerException.
-     */
-    @Test(expected = NullPointerException.class)
-    public void nullNameThrows() {
-        new UndirectedGraphNode(null);
+        assertTrue(a.toString().startsWith("[UndirectedGraphNode "));
+        assertTrue(b.toString().startsWith("[UndirectedGraphNode "));
+        assertTrue(c.toString().startsWith("[UndirectedGraphNode "));
+        assertTrue(new UndirectedGraphNode()
+                   .toString().startsWith("[UndirectedGraphNode "));
     }
     
     /**
@@ -308,7 +298,7 @@ public class UndirectedGraphNodeTest {
     @Test(expected = NullPointerException.class) 
     public void connectingToNonNullNodeHavingNoOwnerGraphThrows() {
         G1.addNode(a);
-        a.connectTo(new UndirectedGraphNode("tmp"));
+        a.connectTo(new UndirectedGraphNode());
     }
     
     /**

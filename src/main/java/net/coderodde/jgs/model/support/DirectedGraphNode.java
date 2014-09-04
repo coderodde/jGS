@@ -30,12 +30,9 @@ public class DirectedGraphNode extends AbstractNode<DirectedGraphNode> {
     private final Set<DirectedGraphNode> out;
     
     /**
-     * Constructs a new directed graph node with a given name.
-     * 
-     * @param name the name for the new node.
+     * Constructs a new directed graph node.
      */
-    public DirectedGraphNode(final String name) {
-        super(name);
+    public DirectedGraphNode() {
         this.in  = new LinkedHashSet<>();
         this.out = new LinkedHashSet<>();
     }
@@ -87,11 +84,7 @@ public class DirectedGraphNode extends AbstractNode<DirectedGraphNode> {
                 // session should be able to break the "edge invariant"
                 // mentioned in the javadoc of this class.
                 throw new IllegalStateException(
-                    "Broken edge: node \"" + 
-                    child.getName() + 
-                    "\" has \"" +
-                    this.getName() + 
-                    "\" in its in-list, but not otherwise.");
+                        "A node coupling error detected.");
             }
             
             out.add(child);
@@ -100,11 +93,7 @@ public class DirectedGraphNode extends AbstractNode<DirectedGraphNode> {
         } else if (!child.in.contains(this)) {
             // See NOTE1 and note the symmetry.
             throw new IllegalStateException(
-                "Broken edge: node \"" + 
-                this.getName() + 
-                "\" has \"" + 
-                child.getName() + 
-                "\" in its out-list, but not otherwise.");
+                    "A node coupling error detected.");
         }
     }
 
@@ -190,34 +179,7 @@ public class DirectedGraphNode extends AbstractNode<DirectedGraphNode> {
      */
     @Override
     public final String toString() {
-        return "[DirectedGraphNode " + name + "]";
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @param o the object to test against.
-     * 
-     * @return <code>true</code> if the two objects are considered the "same";
-     * <code>false</code> otherwise.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof DirectedGraphNode)) {
-            return false;
-        }
-        
-        return getName().equals(((DirectedGraphNode) o).getName());
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @return the hash code of this node.
-     */
-    @Override
-    public int hashCode() {
-        return getName().hashCode();
+        return "[DirectedGraphNode " + hashCode() + "]";
     }
     
     /**

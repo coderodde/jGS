@@ -19,11 +19,11 @@ public class UndirectedGraphIntegerWeightFunctionTest {
     private final UndirectedGraphNode c;
     
     public UndirectedGraphIntegerWeightFunctionTest() {
-        graph = new Graph<>("My graph");
+        graph = new Graph<>();
         f     = new UndirectedGraphIntegerWeightFunction();
-        a     = new UndirectedGraphNode("A");
-        b     = new UndirectedGraphNode("B");
-        c     = new UndirectedGraphNode("C");
+        a     = new UndirectedGraphNode();
+        b     = new UndirectedGraphNode();
+        c     = new UndirectedGraphNode();
     }
     
     @Before

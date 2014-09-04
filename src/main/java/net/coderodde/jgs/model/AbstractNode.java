@@ -13,33 +13,9 @@ import static net.coderodde.jgs.Utilities.checkNotNull;
 public abstract class AbstractNode<T extends AbstractNode<T>> implements Iterable<T> {
 
     /**
-     * Holds the name of this node.
-     */
-    protected final String name;
-    
-    /**
      * Holds the reference to the graph this node belongs to.
      */
     protected Graph<T> ownerGraph;
-    
-    /**
-     * Initializes this node with a name.
-     * 
-     * @param name the name of this node.
-     */
-    public AbstractNode(final String name) {
-        checkNotNull(name, "A node must have a name; null received.");
-        this.name = name;
-    }
-    
-    /**
-     * Returns the name of this node.
-     * 
-     * @return the name of this node. 
-     */
-    public String getName() {
-        return name;
-    }
     
     /**
      * Returns the graph owning this node, or <code>null</code> if this node is
@@ -122,26 +98,6 @@ public abstract class AbstractNode<T extends AbstractNode<T>> implements Iterabl
      */
     @Override
     public abstract String toString();
-    
-    /**
-     * Returns <code>true</code> if this node is considered to be same as
-     * <code>o</code>.
-     * 
-     * @param o the object to compare against.
-     * 
-     * @return <code>true</code> if the two objects are "same"; 
-     * <code>false</code> otherwise.
-     */
-    @Override
-    public abstract boolean equals(final Object o);
-
-    /**
-     * Returns a hash code of the node.
-     * 
-     * @return a hash code.
-     */
-    @Override
-    public abstract int hashCode();
     
     protected void addEdgeAmountDifference(final int diff) {
         ownerGraph.edgeAmount += diff;

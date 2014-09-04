@@ -52,12 +52,11 @@ public class DenseGraphShortestPathSuite implements DemoSuite {
                         BOX_SIDE_LENGTH,
                         BOX_SIDE_LENGTH,
                         EDGE_LENGTH_FACTOR,
-                        "My graph",
                         new Random(seed));
         
         final Random r = new Random(seed);
-        this.source = data.first.getByName("" + r.nextInt(data.first.size()));
-        this.target = data.first.getByName("" + r.nextInt(data.first.size()));
+        this.source = data.first.get(r.nextInt(data.first.size()));
+        this.target = data.first.get(r.nextInt(data.first.size()));
         this.f = data.second;
         this.hf = new EuclidianDoubleHeuristicFunction(data.third);
         

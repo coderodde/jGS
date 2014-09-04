@@ -2,13 +2,17 @@ package net.coderodde.jgs;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import net.coderodde.jgs.model.AbstractNode;
 import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.GraphNodeCoordinates;
 import net.coderodde.jgs.model.support.DirectedGraphDoubleWeightFunction;
 import net.coderodde.jgs.model.support.DirectedGraphNode;
+import net.coderodde.jgs.model.support.UndirectedGraphDoubleWeightFunction;
+import net.coderodde.jgs.model.support.UndirectedGraphNode;
 
 /**
  * This class holds various utility methods.
@@ -227,6 +231,22 @@ public class Utilities {
     }
     
     /**
+     * Checks that the integer <code>what</code> is not below 
+     * <code>minimum</code>.
+     * 
+     * @param what the integer to check.
+     * @param minimum the lower bound.
+     * @param message the message upon exception.
+     */
+    public static void checkNotBelow(final int what,
+                                     final int minimum,
+                                     final String message) {
+        if (what < minimum) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+    
+    /**
      * Creates a directed graph, its weight function and the coordinate map to 
      * be passed to the heuristic function.
      * 
@@ -251,16 +271,15 @@ public class Utilities {
                                                      final double width,
                                                      final double height,
                                                      final double edgeFactor,
-                                                     final String graphName,
                                                      final Random rnd) {
-        final Graph<DirectedGraphNode> graph = new Graph<>(graphName);
+        final Graph<DirectedGraphNode> graph = new Graph<>();
         final GraphNodeCoordinates coords = new GraphNodeCoordinates();
         final List<DirectedGraphNode> list = new ArrayList<>(size);
         final DirectedGraphDoubleWeightFunction f = 
           new DirectedGraphDoubleWeightFunction();
         
         for (int i = 0; i < size; ++i) {
-            final DirectedGraphNode node = new DirectedGraphNode("" + i);
+            final DirectedGraphNode node = new DirectedGraphNode();
             graph.addNode(node);
             list.add(node);
             
@@ -290,6 +309,104 @@ public class Utilities {
         return new Triple<>(graph, f, coords);
     }
     
+    /**
+     * 
+     * @param graphName
+     * @param width
+     * @param height
+     * @param obstacleFactor
+     * @return 
+     */
+    public static final Triple<Graph<UndirectedGraphNode>,
+                               UndirectedGraphDoubleWeightFunction,
+                               Set<UndirectedGraphNode>> 
+            createGridGraphWithObstacles(final int width,
+                                         final int height,
+                                         float obstacleFactor,
+                                         final Random rnd) {
+        final Graph<UndirectedGraphNode> grid = new Graph<>();
+        
+        final UndirectedGraphDoubleWeightFunction f =
+                new UndirectedGraphDoubleWeightFunction();
+        
+        final UndirectedGraphNode[][] nodeMatrix = 
+                new UndirectedGraphNode[height][width];
+        
+        final Double SQRT2 = Math.sqrt(2.0);
+        
+        // Create all the nodes.
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                final UndirectedGraphNode node = 
+                        new UndirectedGraphNode();
+                nodeMatrix[y][x] = node;
+            }
+        }
+        
+        // Create horizontal edges.
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width - 1; ++x) {
+                final UndirectedGraphNode a = nodeMatrix[y][x];
+                final UndirectedGraphNode b = nodeMatrix[y][x + 1];
+                
+                a.connectTo(b);
+                
+                f.put(a, b, 1.0);
+            }
+        }
+        
+        // Create vertical edges;
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height - 1; ++y) {
+                final UndirectedGraphNode a = nodeMatrix[y][x];
+                final UndirectedGraphNode b = nodeMatrix[y + 1][x];
+                
+                a.connectTo(b);
+                
+                f.put(a, b, 1.0);
+            }
+        }
+        
+        // Create /-diagonal edges.
+        for (int y = 0; y < height - 1; ++y) {
+            for (int x = 1; x < width; ++x) {
+                final UndirectedGraphNode a = nodeMatrix[y][x];
+                final UndirectedGraphNode b = nodeMatrix[y + 1][x - 1];
+                
+                a.connectTo(b);
+                
+                f.put(a, b, SQRT2);
+            }
+        }
+        
+        // Create \-diagonal edges. 
+        for (int y = 0; y < height - 1; ++y) {
+            for (int x = 0; x < width - 1; ++x) {
+                final UndirectedGraphNode a = nodeMatrix[y][x];
+                final UndirectedGraphNode b = nodeMatrix[y + 1][x + 1];
+                
+                a.connectTo(b);
+                
+                f.put(a, b, SQRT2);
+            }
+        }
+        
+        if (obstacleFactor > 0.9f) {
+            obstacleFactor = 0.9f;
+        }
+        
+        int obstacleCount = (int)(obstacleFactor * width * height);
+        
+        Set<UndirectedGraphNode> obstacleNodes = new HashSet<>();
+        
+        while (obstacleNodes.size() < obstacleCount) {
+            obstacleNodes.add(nodeMatrix[rnd.nextInt(height)]
+                                        [rnd.nextInt(width)]);
+        }
+        
+        return new Triple<>(grid, f, obstacleNodes);
+    }
+            
     /**
      * The actual implementation of title-printing methods.
      * 

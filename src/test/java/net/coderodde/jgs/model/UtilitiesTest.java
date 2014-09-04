@@ -32,11 +32,11 @@ public class UtilitiesTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testCheckNodesBelongToSameGraph() {
-        UndirectedGraphNode a = new UndirectedGraphNode("A");
-        UndirectedGraphNode b = new UndirectedGraphNode("B");
+        UndirectedGraphNode a = new UndirectedGraphNode();
+        UndirectedGraphNode b = new UndirectedGraphNode();
         
-        Graph<UndirectedGraphNode> g1 = new Graph<>("Graph 1");
-        Graph<UndirectedGraphNode> g2 = new Graph<>("Graph 2");
+        Graph<UndirectedGraphNode> g1 = new Graph<>();
+        Graph<UndirectedGraphNode> g2 = new Graph<>();
         
         g2.addNode(a);
         g1.addNode(b);
@@ -49,11 +49,11 @@ public class UtilitiesTest {
      */
     @Test
     public void testCheckNodesBelongToSameGraph2() {
-        UndirectedGraphNode a = new UndirectedGraphNode("A");
-        UndirectedGraphNode b = new UndirectedGraphNode("B");
+        UndirectedGraphNode a = new UndirectedGraphNode();
+        UndirectedGraphNode b = new UndirectedGraphNode();
         
-        Graph<UndirectedGraphNode> g1 = new Graph<>("Graph 1");
-        Graph<UndirectedGraphNode> g2 = new Graph<>("Graph 2");
+        Graph<UndirectedGraphNode> g1 = new Graph<>();
+        Graph<UndirectedGraphNode> g2 = new Graph<>();
         
         g2.addNode(a);
         g2.addNode(b);
