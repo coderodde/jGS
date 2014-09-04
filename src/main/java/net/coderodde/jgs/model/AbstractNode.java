@@ -1,8 +1,5 @@
 package net.coderodde.jgs.model;
 
-import java.util.Objects;
-import static net.coderodde.jgs.Utilities.checkNotNull;
-
 /**
  * This class defines the API for graph nodes.
  * 
