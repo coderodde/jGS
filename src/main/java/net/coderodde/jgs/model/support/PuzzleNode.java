@@ -61,11 +61,34 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
             for (int x = 0; x < matrix.length; ++x) {
                 this.m[y][x] = matrix[y][x];
                 set.add(matrix[y][x]);
+                
+                if (matrix[y][x] == 0) {
+                    this.x = (byte) x;
+                    this.y = (byte) y;
+                }
             }
         }
         
         if (set.size() != matrix.length * matrix.length) {
             throw new IllegalArgumentException("Duplicate tile detected.");
+        }
+        
+        if (!set.contains((byte) 0)) {
+            throw new IllegalArgumentException();
+        }
+        
+        Byte[] array = new Byte[set.size()];
+        Byte badOne = null;
+        
+        try {
+            for (final Byte b : set) {
+                badOne = b;
+                array[b] = b;
+                badOne = null;
+            }
+        } catch (final ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalArgumentException(
+                    "Bad entry (" + badOne + ") detected");
         }
     }
     
