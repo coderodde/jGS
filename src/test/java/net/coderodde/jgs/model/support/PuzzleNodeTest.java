@@ -1,13 +1,12 @@
 package net.coderodde.jgs.model.support;
 
-import org.junit.Test;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class PuzzleNodeTest {
-
-    @Test
-    public void testIterator() {
-    }
 
     @Test
     public void testEquals() {
@@ -24,6 +23,10 @@ public class PuzzleNodeTest {
         }));
         
         assertFalse(u.equals(u.moveDown()));
+        assertTrue(u != u.moveUp());
+        assertTrue(u != u.moveRight());
+        assertTrue(u != u.moveDown());
+        assertTrue(u != u.moveLeft());
     }
 
     @Test
@@ -248,12 +251,130 @@ public class PuzzleNodeTest {
     
     @Test
     public void testIsConnectedTo() {
+        PuzzleNode origin = new PuzzleNode(new byte[][]{
+            {3, 1, 8},
+            {4, 0, 7},
+            {2, 5, 6}
+        });
         
+        PuzzleNode u = new PuzzleNode(new byte[][]{
+            {3, 0, 8}, 
+            {4, 1, 7}, 
+            {2, 5, 6} 
+        });
+        
+        PuzzleNode r = new PuzzleNode(new byte[][]{
+            {3, 1, 8}, 
+            {4, 7, 0}, 
+            {2, 5, 6} 
+        });
+        
+        PuzzleNode d = new PuzzleNode(new byte[][]{
+            {3, 1, 8}, 
+            {4, 5, 7}, 
+            {2, 0, 6} 
+        });
+        
+        PuzzleNode l = new PuzzleNode(new byte[][]{
+            {3, 1, 8}, 
+            {0, 4, 7}, 
+            {2, 5, 6} 
+        });
+        
+        assertTrue(origin.isConnectedTo(u));
+        assertTrue(origin.isConnectedTo(r));
+        assertTrue(origin.isConnectedTo(d));
+        assertTrue(origin.isConnectedTo(l));
+        
+        assertTrue(u.isConnectedTo(origin));
+        assertTrue(r.isConnectedTo(origin));
+        assertTrue(d.isConnectedTo(origin));
+        assertTrue(l.isConnectedTo(origin));
+        
+        PuzzleNode n = new PuzzleNode(new byte[][]{
+            {3, 1, 8},
+            {4, 2, 7},
+            {0, 5, 6} 
+        });
+        
+        assertFalse(n.isConnectedTo(origin));
+        assertFalse(origin.isConnectedTo(n));
     }
 
     @Test
-    public void testParents() {
+    public void testIterator() {
+        PuzzleNode u = new PuzzleNode(new byte[][]{
+            {1, 2, 0}, 
+            {3, 4, 5}, 
+            {6, 7, 8} 
+        });
         
+        final Set<PuzzleNode> set = new HashSet<>();
+        
+        for (final PuzzleNode parent : u) {
+            set.add(parent);
+        }
+        
+        PuzzleNode a = new PuzzleNode(new byte[][]{
+            {1, 0, 2},
+            {3, 4, 5},
+            {6, 7, 8}
+        });
+        
+        PuzzleNode b = new PuzzleNode(new byte[][]{
+            {1, 2, 5},
+            {3, 4, 0},
+            {6, 7, 8}
+        });
+        
+        assertEquals(2, set.size());
+        
+        assertTrue(u.isConnectedTo(a));
+        assertTrue(u.isConnectedTo(b));
+        
+        assertTrue(a.isConnectedTo(u));
+        assertTrue(b.isConnectedTo(u));
+        
+        assertTrue(set.contains(a));
+        assertTrue(set.contains(b));
+    }
+    
+    @Test
+    public void testParents() {
+        PuzzleNode u = new PuzzleNode(new byte[][]{
+            {1, 2, 0}, 
+            {3, 4, 5}, 
+            {6, 7, 8} 
+        });
+        
+        final Set<PuzzleNode> set = new HashSet<>();
+        
+        for (final PuzzleNode parent : u.parents()) {
+            set.add(parent);
+        }
+        
+        PuzzleNode a = new PuzzleNode(new byte[][]{
+            {1, 0, 2},
+            {3, 4, 5},
+            {6, 7, 8}
+        });
+        
+        PuzzleNode b = new PuzzleNode(new byte[][]{
+            {1, 2, 5},
+            {3, 4, 0},
+            {6, 7, 8}
+        });
+        
+        assertEquals(2, set.size());
+        
+        assertTrue(u.isConnectedTo(a));
+        assertTrue(u.isConnectedTo(b));
+        
+        assertTrue(a.isConnectedTo(u));
+        assertTrue(b.isConnectedTo(u));
+        
+        assertTrue(set.contains(a));
+        assertTrue(set.contains(b));
     }
 
     @Test

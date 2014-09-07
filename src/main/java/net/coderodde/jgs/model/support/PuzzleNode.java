@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import static net.coderodde.jgs.Utilities.checkNotNull;
 import net.coderodde.jgs.model.AbstractNode;
 import net.coderodde.jgs.model.Graph;
 
@@ -16,8 +17,6 @@ import net.coderodde.jgs.model.Graph;
  * @version 1.6
  */
 public class PuzzleNode extends AbstractNode<PuzzleNode> {
-   
-    private static final Graph<PuzzleNode> dummyOwnerGraph = new Graph<>();
     
     /**
      * The minimum width/height of this puzzle node.
@@ -28,6 +27,11 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
      * The maximum width/height of this puzzle node.
      */
     private static final int MAXIMUM_DIMENSION = 11;
+   
+    /**
+     * Maps puzzle dimensions to their respective graphs.
+     */
+    private static Graph<PuzzleNode>[] graphMap = new Graph[MAXIMUM_DIMENSION];
     
     /**
      * The matrix of tiles in this node..
@@ -49,8 +53,15 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
      * 
      * @param matrix the input matrix.
      */
-    public PuzzleNode(final byte[][] matrix) {
-        this(matrix.length);
+    public PuzzleNode(final byte[][] matrix) {       
+        if (graphMap[matrix.length] == null) {
+            graphMap[matrix.length] = new Graph<>();
+            this.ownerGraph = graphMap[matrix.length];
+        }
+        
+        this.m = new byte[matrix.length][matrix.length];
+        
+        // Filter set.
         final Set<Byte> set = new HashSet<>();
         
         for (int y = 0; y < matrix.length; ++y) {
@@ -84,7 +95,6 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
             for (final Byte b : set) {
                 badOne = b;
                 array[b] = b;
-                badOne = null;
             }
         } catch (final ArrayIndexOutOfBoundsException ex) {
             throw new IllegalArgumentException(
@@ -98,7 +108,11 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
      * @param n the dimension of this puzzle node.
      */
     public PuzzleNode(final int n) {
-        super.ownerGraph = dummyOwnerGraph;
+        if (graphMap[n] == null) {
+            graphMap[n] = new Graph<>();
+            this.ownerGraph = graphMap[n];
+        }
+        
         checkDimension(n);
         m = new byte[n][n];
         
@@ -121,7 +135,7 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
      * @param node the node to copy.
      */
     public PuzzleNode(final PuzzleNode node) {
-        super.ownerGraph = dummyOwnerGraph;
+        this.ownerGraph = node.getOwnerGraph();
         final int n = node.getDimension();
         m = new byte[n][n];
         
@@ -307,7 +321,7 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
                 Math.max(5, (int)(Math.floor(Math.log10(maxNumber))) + 1);
         
         final StringBuilder sb = new StringBuilder();
-        final StringBuilder ALL = new StringBuilder(8192);
+        final StringBuilder all = new StringBuilder(8192);
         
         String smallBar = "+-";
         String filler = "| ";
@@ -327,13 +341,13 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
         final String horizontalBar = sb.toString();
         
         for (int yy = 0; yy != m.length; ++yy) {
-            ALL.append(horizontalBar);;
+            all.append(horizontalBar);;
             
             for (int xx = 0; xx != m.length; ++xx) {
-                ALL.append(filler);
+                all.append(filler);
             }
             
-            ALL.append("|\n");
+            all.append("|\n");
             
             for (int xx = 0; xx != m.length; ++xx) {
                 int fl;
@@ -358,20 +372,20 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
                     skip2 += ' ';
                 }
                 
-                ALL.append("| ")
+                all.append("| ")
                    .append(String.format(skip + "%d" + skip2 + " ", m[yy][xx]));
             }
             
-            ALL.append("|\n");
+            all.append("|\n");
             
             for (int xx = 0; xx != m.length; ++xx) {
-                ALL.append(filler);
+                all.append(filler);
             }
             
-            ALL.append("|\n");
+            all.append("|\n");
         }
         
-        return ALL.append(horizontalBar).toString();
+        return all.append(horizontalBar).toString();
     }
 
     /**
@@ -388,8 +402,28 @@ public class PuzzleNode extends AbstractNode<PuzzleNode> {
     @Override
     public void connectTo(PuzzleNode child) {}
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @param childCandidate the node to test against.
+     * 
+     * @return <code>true</code> if the distance between this node and
+     * <code>childCandidate</code> is exactly 1; <code>false</code> otherwise.
+     */
     @Override
     public boolean isConnectedTo(PuzzleNode childCandidate) {
+        checkNotNull(childCandidate, "The child candidate is null.");
+        
+        if (this.getDimension() != childCandidate.getDimension()) {
+            return false;
+        }
+        
+        for (final PuzzleNode actualChild : this) {
+            if (actualChild.equals(childCandidate)) {
+                return true;
+            }
+        }
+        
         return false;
     }
 
