@@ -11,6 +11,7 @@ import net.coderodde.jgs.model.Graph;
 import net.coderodde.jgs.model.GraphNodeCoordinates;
 import net.coderodde.jgs.model.support.DirectedGraphDoubleWeightFunction;
 import net.coderodde.jgs.model.support.DirectedGraphNode;
+import net.coderodde.jgs.model.support.PuzzleNode;
 import net.coderodde.jgs.model.support.UndirectedGraphDoubleWeightFunction;
 import net.coderodde.jgs.model.support.UndirectedGraphNode;
 
@@ -257,7 +258,6 @@ public class Utilities {
      * @param edgeFactor the factor by which the actual distance between two 
      * end nodes will be multiplied as to make the heuristic function
      * <tt>optimistic</tt>; must be above 1.0.
-     * @param graphName the graph name.
      * @param rnd the random number generator.
      * 
      * @return a triple containing the graph, weight function and the map
@@ -309,12 +309,51 @@ public class Utilities {
         return new Triple<>(graph, f, coords);
     }
     
+    public static final PuzzleNode stepAway(final PuzzleNode from,
+                                            int steps,
+                                            final Random r) {
+        PuzzleNode current = from;
+        
+        while (steps > 0) {
+            PuzzleNode next = null;
+            
+            switch (r.nextInt(4)) {
+                case 0:
+                    // Move up.
+                    next = current.moveUp();
+                    break;
+                    
+                case 1:
+                    // Move right.
+                    next = current.moveRight();
+                    break;
+                    
+                case 2:
+                    // Move down.
+                    next = current.moveDown();
+                    break;
+                    
+                case 3:
+                    // Move left.
+                    next = current.moveLeft();
+                    break;
+            }
+            
+            if (next != null) {
+                current = next;
+                --steps;
+            }
+        }
+        
+        return current;
+    }
+            
     /**
      * 
-     * @param graphName
      * @param width
      * @param height
      * @param obstacleFactor
+     * @param rnd
      * @return 
      */
     public static final Triple<Graph<UndirectedGraphNode>,
