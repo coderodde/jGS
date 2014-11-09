@@ -248,6 +248,43 @@ public class Utilities {
     }
     
     /**
+     * Creates a random directed, unweighted graph.
+     * 
+     * @param size the amount of nodes in the graph.
+     * @param edges the amount of edges in the graph.
+     * @param rnd the random number generator.
+     * 
+     * @return a random graph.
+     */
+    public static final Graph<DirectedGraphNode>
+            createRandomDirectedUnweightedGraph(final int size,
+                                                final int edges,
+                                                final Random rnd) {
+        final Graph<DirectedGraphNode> graph = new Graph<>();
+        
+        for (int i = 0; i < size; ++i) {
+            final DirectedGraphNode node = new DirectedGraphNode();
+            graph.addNode(node);
+        }
+        
+        int e = edges;
+        final int maxEdges = (int)(0.8 * size * size);
+        
+        if (e > maxEdges) {
+            e = maxEdges;
+        }
+        
+        while (e > 0) {
+            final DirectedGraphNode tail = graph.get(rnd.nextInt(size));
+            final DirectedGraphNode head = graph.get(rnd.nextInt(size));
+            tail.connectTo(head);
+            --e;
+        }
+         
+        return graph;
+    }
+    
+    /**
      * Creates a directed graph, its weight function and the coordinate map to 
      * be passed to the heuristic function.
      * 
@@ -274,14 +311,12 @@ public class Utilities {
                                                      final Random rnd) {
         final Graph<DirectedGraphNode> graph = new Graph<>();
         final GraphNodeCoordinates coords = new GraphNodeCoordinates();
-        final List<DirectedGraphNode> list = new ArrayList<>(size);
         final DirectedGraphDoubleWeightFunction f = 
           new DirectedGraphDoubleWeightFunction();
         
         for (int i = 0; i < size; ++i) {
             final DirectedGraphNode node = new DirectedGraphNode();
             graph.addNode(node);
-            list.add(node);
             
             final double x = width * rnd.nextDouble();
             final double y = height * rnd.nextDouble();
@@ -297,8 +332,8 @@ public class Utilities {
         }
         
         while (e > 0) {
-            final DirectedGraphNode tail = list.get(rnd.nextInt(size));
-            final DirectedGraphNode head = list.get(rnd.nextInt(size));
+            final DirectedGraphNode tail = graph.get(rnd.nextInt(size));
+            final DirectedGraphNode head = graph.get(rnd.nextInt(size));
             tail.connectTo(head);
             f.put(tail, 
                   head, 

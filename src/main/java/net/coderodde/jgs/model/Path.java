@@ -51,6 +51,10 @@ implements Iterable<T> {
         this.nodeList = new ArrayList<>(list);
     }
 
+    public T get(final int index) {
+        return nodeList.get(index);
+    }
+    
     /**
      * Returns the amount of nodes in this path.
      * 

@@ -1,5 +1,6 @@
 package net.coderodde.jgs.model.support;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import net.coderodde.jgs.model.Path;
 import net.coderodde.jgs.model.PathFinder;
 
 /**
- * This class implements (unidirectional) breath-first search.
+ * This class implements (unidirectional) breadth-first search.
  * 
  * @author Rodion Efremov
  * @param <T> the type of the graph nodes, must extend {@code AbstractNode}.
@@ -29,7 +30,7 @@ extends PathFinder<T, Integer> {
     }
     
     public BreadthFirstSearchPathFinder() {
-        this(new LinkedList<T>());
+        this(new ArrayDeque<T>());
     }
     
     @Override
